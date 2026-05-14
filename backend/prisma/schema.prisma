@@ -1,0 +1,131 @@
+// 畅搭（FreeDress）数据库模型定义
+// 使用 PostgreSQL 16.13
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户模型
+model User {
+  id            String         @id @default(uuid())
+  phone         String         @unique
+  password      String
+  nickname      String         @default("用户")
+  avatarUrl     String?
+  role          UserRole       @default(USER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  // 关联关系
+  clothes       Cloth[]
+  outfits       Outfit[]
+  favorites     Favorite[]
+  tryOnResults  TryOnResult[]
+  
+  @@map("users")
+}
+
+// 用户角色枚举
+enum UserRole {
+  USER  // 普通用户
+  VIP   // VIP用户
+}
+
+// 衣物模型
+model Cloth {
+  id        String        @id @default(uuid())
+  userId    String
+  imageUrl  String        // 图片URL
+  category  ClothCategory // 衣物分类
+  color     String?       // 颜色
+  style     String?       // 风格
+  season    String[]      // 适用季节
+  tags      String[]      // 标签
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  
+  // 关联关系
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outfitClothes OutfitCloth[]
+  
+  @@index([userId])
+  @@index([category])
+  @@map("clothes")
+}
+
+// 衣物分类枚举
+enum ClothCategory {
+  TOP       // 上衣
+  BOTTOM    // 下装
+  COAT      // 外套
+  ACCESSORY // 配饰
+  SHOE      // 鞋子
+}
+
+// 搭配模型
+model Outfit {
+  id            String         @id @default(uuid())
+  userId        String
+  aiDescription String?        // AI生成的搭配描述
+  style         String?        // 风格
+  occasion      String?        // 适用场合
+  imageUrl      String?        // 搭配效果图URL
+  createdAt     DateTime       @default(now())
+  
+  // 关联关系
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outfitClothes OutfitCloth[]
+  favorites     Favorite[]
+  tryOnResults  TryOnResult[]
+  
+  @@index([userId])
+  @@map("outfits")
+}
+
+// 搭配-衣物关联表（多对多关系）
+model OutfitCloth {
+  outfitId  String
+  clothId   String
+  order     Int      @default(0) // 搭配中的顺序
+  
+  outfit    Outfit   @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  cloth     Cloth    @relation(fields: [clothId], references: [id], onDelete: Cascade)
+  
+  @@id([outfitId, clothId])
+  @@map("outfit_clothes")
+}
+
+// 收藏模型（用户收藏的搭配）
+model Favorite {
+  userId    String
+  outfitId  String
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outfit    Outfit   @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  
+  @@id([userId, outfitId])
+  @@map("favorites")
+}
+
+// AI试穿结果模型
+model TryOnResult {
+  id              String   @id @default(uuid())
+  userId          String
+  outfitId        String
+  personImageUrl  String   // 人物照片URL
+  resultImageUrl  String   // AI生成结果URL
+  createdAt       DateTime @default(now())
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outfit          Outfit   @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([outfitId])
+  @@map("tryon_results")
+}
