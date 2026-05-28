@@ -1,11 +1,16 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
+import { CaptchaService } from './captcha.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 export declare class AuthService {
     private readonly prisma;
     private readonly jwtService;
-    constructor(prisma: PrismaService, jwtService: JwtService);
+    private readonly captchaService;
+    private readonly resetTokens;
+    private readonly RESET_TOKEN_TTL;
+    constructor(prisma: PrismaService, jwtService: JwtService, captchaService: CaptchaService);
     register(registerDto: RegisterDto): Promise<{
         accessToken: string;
         refreshToken: string;
@@ -35,6 +40,14 @@ export declare class AuthService {
         refreshToken: string;
     }>;
     private generateTokens;
+    forgotPassword(phone: string, captchaId: string, captchaAnswer: string): Promise<{
+        resetToken: string;
+        message: string;
+    }>;
+    resetPassword(resetPasswordDto: ResetPasswordDto): Promise<{
+        message: string;
+    }>;
+    private cleanupResetTokens;
     validateUser(userId: string): Promise<{
         id: string;
         phone: string;

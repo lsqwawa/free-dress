@@ -1,0 +1,86 @@
+<!-- 登录页 · Editorial Couture -->
+<view class="login-page grain-bg">
+  <!-- 顶部期号条 -->
+  <view class="top-row">
+    <view class="top-left">
+      <view class="dot-line"></view>
+      <text class="text-kicker">FREEDRESS · ATELIER</text>
+    </view>
+    <text class="text-mono">{{volText}}</text>
+  </view>
+
+  <!-- Hero 区 -->
+  <view class="hero-block anim-fade-in-up">
+    <text class="hero-chinese text-hero">畅</text>
+    <view class="hero-second-line">
+      <text class="hero-chinese text-hero">搭</text>
+      <view class="hero-aside">
+        <text class="hero-english text-caption">FREEDRESS</text>
+        <text class="hero-issue text-mono">{{issueNo}}</text>
+      </view>
+    </view>
+    <view class="hero-divider"></view>
+    <text class="tagline text-body">一刊一搭 · 把每天穿成展览</text>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form-container anim-fade-in-up delay-2">
+    <view class="input-group">
+      <text class="input-label text-caption">手机号</text>
+      <input 
+        class="input-field" 
+        type="number" 
+        maxlength="11"
+        placeholder="请输入手机号"
+        placeholder-class="input-placeholder"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+      />
+      <view class="input-line"></view>
+    </view>
+
+    <view class="input-group">
+      <text class="input-label text-caption">密码</text>
+      <input 
+        class="input-field" 
+        password="{{true}}"
+        maxlength="20"
+        placeholder="请输入密码"
+        placeholder-class="input-placeholder"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+      />
+      <view class="input-line"></view>
+    </view>
+
+    <!-- 主按钮 -->
+    <view class="actions">
+      <button class="btn-primary" bindtap="handleLogin" loading="{{loading}}">
+        <text class="btn-text">进入衣橱</text>
+        <text class="btn-arrow">→</text>
+      </button>
+
+      <view class="forgot-row" bindtap="goToForgotPassword">
+        <text class="forgot-text text-caption">忘记密码？</text>
+      </view>
+
+      <!-- 分隔 -->
+      <view class="divider-row">
+        <view class="divider-line"></view>
+        <text class="divider-text text-kicker">OR</text>
+        <view class="divider-line"></view>
+      </view>
+
+      <!-- 注册按钮 -->
+      <button class="btn-outline" bindtap="goToRegister">
+        <text class="btn-outline-text">创建新账号</text>
+        <text class="btn-outline-icon">+</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer">
+    <text class="text-mono footer-text">EDITORIAL ISSUE · COUTURE WARDROBE</text>
+  </view>
+</view>

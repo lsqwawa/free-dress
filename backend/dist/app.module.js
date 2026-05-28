@@ -9,10 +9,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
 const prisma_module_1 = require("./prisma/prisma.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const users_module_1 = require("./modules/users/users.module");
 const clothes_module_1 = require("./modules/clothes/clothes.module");
+const upload_module_1 = require("./modules/upload/upload.module");
+const outfits_module_1 = require("./modules/outfits/outfits.module");
+const tryon_module_1 = require("./modules/tryon/tryon.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -23,10 +28,17 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
                 envFilePath: '.env',
             }),
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(process.cwd(), 'uploads'),
+                serveRoot: '/uploads',
+            }),
             prisma_module_1.PrismaModule,
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             clothes_module_1.ClothesModule,
+            upload_module_1.UploadModule,
+            outfits_module_1.OutfitsModule,
+            tryon_module_1.TryonModule,
         ],
     })
 ], AppModule);

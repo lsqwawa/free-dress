@@ -1,0 +1,234 @@
+.login-page {
+  height: 100vh;
+  padding: 88rpx var(--sp-6) var(--sp-6);
+  background-color: var(--ecru);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* 顶部 */
+.top-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+}
+
+.top-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.dot-line {
+  width: 36rpx;
+  height: 2rpx;
+  background-color: var(--ink);
+}
+
+/* Hero */
+.hero-block {
+  margin-bottom: var(--sp-5);
+}
+
+.hero-chinese {
+  font-family: var(--font-display);
+  font-size: 140rpx;
+  line-height: 148rpx;
+  letter-spacing: -4rpx;
+  color: var(--ink);
+}
+
+.hero-second-line {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.hero-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-bottom: var(--sp-3);
+  gap: var(--sp-1);
+}
+
+.hero-english {
+  font-size: var(--fs-xs);
+  letter-spacing: 8rpx;
+  color: var(--ink-soft);
+}
+
+.hero-issue {
+  color: var(--caramel);
+  font-size: var(--fs-sm);
+  letter-spacing: 3rpx;
+}
+
+.hero-divider {
+  height: 1rpx;
+  background-color: var(--mist-gray);
+  margin: var(--sp-3) 0;
+}
+
+.tagline {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* 表单 */
+.form-container {
+  width: 100%;
+}
+
+.input-group {
+  margin-bottom: var(--sp-4);
+}
+
+.input-label {
+  display: block;
+  margin-bottom: var(--sp-2);
+  color: var(--ink-muted);
+  font-size: var(--fs-xs);
+  letter-spacing: 2rpx;
+}
+
+.input-field {
+  width: 100%;
+  font-size: var(--fs-md);
+  color: var(--ink);
+  padding: var(--sp-2) 0;
+  background: transparent;
+  border: none;
+}
+
+.input-placeholder {
+  color: var(--clay);
+}
+
+.input-line {
+  height: 2rpx;
+  background-color: var(--ink);
+  margin-top: var(--sp-1);
+  transition: background-color 260ms;
+}
+
+/* 按钮 */
+.actions {
+  margin-top: var(--sp-6);
+}
+
+.btn-primary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 96rpx;
+  background-color: var(--ink);
+  border: none;
+  padding: 0 var(--sp-6);
+  gap: var(--sp-3);
+  transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-text {
+  font-size: var(--fs-md);
+  color: var(--cream);
+  font-weight: 500;
+  letter-spacing: 2rpx;
+}
+
+.btn-arrow {
+  font-size: var(--fs-lg);
+  color: var(--cream);
+}
+
+.forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--sp-2) 0;
+}
+
+.forgot-text {
+  color: var(--caramel);
+  font-style: italic;
+}
+
+/* 分隔 */
+.divider-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-2) 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background-color: var(--mist-gray);
+}
+
+.divider-text {
+  color: var(--clay);
+}
+
+/* 注册按钮 */
+.btn-outline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 96rpx;
+  background-color: transparent;
+  border: 2rpx solid var(--ink);
+  gap: var(--sp-3);
+}
+
+.btn-outline::after {
+  border: none;
+}
+
+.btn-outline:active {
+  background-color: var(--cream);
+}
+
+.btn-outline-text {
+  font-size: var(--fs-md);
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: 2rpx;
+}
+
+.btn-outline-icon {
+  font-size: var(--fs-lg);
+  color: var(--ink);
+}
+
+/* 底部 */
+.footer {
+  margin-top: var(--sp-6);
+  text-align: center;
+}
+
+.footer-text {
+  color: var(--ink-muted);
+  font-size: 20rpx;
+}

@@ -1,0 +1,9 @@
+<!-- Section Header 组件 · 期刊风分区标题 -->
+<view class="section-header">
+  <view class="section-top">
+    <text class="section-kicker text-kicker">{{kicker}}</text>
+    <text class="section-issue text-mono" wx:if="{{issue}}">{{issue}}</text>
+  </view>
+  <text class="section-title text-section-title">{{title}}</text>
+  <view class="section-line"></view>
+</view>

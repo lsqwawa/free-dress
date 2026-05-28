@@ -1,6 +1,7 @@
 export declare class RegisterDto {
     phone: string;
     password: string;
-    code: string;
+    captchaId: string;
+    captchaAnswer: string;
     nickname?: string;
 }

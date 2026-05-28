@@ -1,0 +1,97 @@
+<!-- AI试穿页 · TRY-ON STUDIO -->
+<view class="tryon-page">
+  <view class="screen-header">
+    <view class="header-top">
+      <text class="text-kicker">TRY-ON STUDIO</text>
+      <text class="text-mono header-issue">STUDIO №07</text>
+    </view>
+    <text class="text-serif-title header-title">AI 试穿</text>
+    <view class="hairline"></view>
+  </view>
+
+  <scroll-view scroll-y class="scroll-content" enhanced="{{true}}" show-scrollbar="{{false}}">
+    <!-- 步骤指示 -->
+    <view class="steps-row">
+      <view class="step-item" wx:for="{{steps}}" wx:key="no">
+        <view class="step-circle {{index <= activeStep ? 'step-circle--active' : ''}}">
+          <text class="step-no {{index <= activeStep ? 'step-no--active' : ''}}">{{item.no}}</text>
+        </view>
+        <text class="text-kicker step-kicker" style="color: {{index === activeStep ? 'var(--caramel)' : 'var(--ink-muted)'}};">{{item.kicker}}</text>
+        <text class="text-caption step-label">{{item.label}}</text>
+      </view>
+      <view class="step-line" wx:for="{{[0,1]}}" wx:key="*this"></view>
+    </view>
+
+    <!-- Step 01: 上传 -->
+    <view class="section">
+      <section-header kicker="STEP 01 · UPLOAD" title="上传你的全身照" issue="VIEWFINDER" />
+      <view class="upload-preview" wx:if="{{personUri}}">
+        <image src="{{personUri}}" mode="aspectFill" class="preview-img" />
+        <view class="preview-remove" bindtap="removePhoto"><text class="remove-icon">✕</text></view>
+        <view class="uploading-overlay" wx:if="{{uploading}}">
+          <text class="uploading-text">上传中...</text>
+        </view>
+      </view>
+      <view class="upload-frame" wx:else bindtap="choosePhoto">
+        <view class="corner corner-tl"></view>
+        <view class="corner corner-tr"></view>
+        <view class="corner corner-bl"></view>
+        <view class="corner corner-br"></view>
+        <view class="upload-icon-block">
+          <text class="upload-icon-text">📷</text>
+        </view>
+        <text class="text-section-title upload-title">点击选择照片</text>
+        <text class="text-caption upload-hint">点击从相册选择全身照</text>
+      </view>
+    </view>
+
+    <!-- Step 02: 选搭配 -->
+    <view class="section">
+      <section-header kicker="STEP 02 · CHOOSE" title="选择一套搭配" issue="{{outfitCount}} OUTFITS" />
+      <view class="empty-drafts" wx:if="{{outfits.length === 0}}">
+        <text class="text-caption" style="font-style: italic;">暂无搭配，请先在搭配实验室创建</text>
+      </view>
+      <scroll-view scroll-x wx:else class="drafts-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="drafts-row">
+          <view wx:for="{{outfits}}" wx:key="id" class="draft-card {{item.id === selectedOutfitId ? 'draft-card--selected' : ''}}" bindtap="selectOutfit" data-id="{{item.id}}">
+            <view class="draft-image">
+              <text class="draft-placeholder">◇</text>
+            </view>
+            <view class="draft-info">
+              <text class="text-kicker">{{item.style || '搭配'}}</text>
+              <text class="text-body draft-title">{{item.clothCount || 0}} 件</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 主按钮 -->
+    <view class="action-wrap">
+      <button class="btn-primary" bindtap="handleGenerate" loading="{{isGenerating}}" disabled="{{isGenerating || !personUrl || !selectedOutfitId}}">
+        <text class="btn-text">{{isGenerating ? 'AI 正在缝制...' : '开始合成'}}</text>
+      </button>
+      <text class="text-caption action-hint">合成中将显示 "AI 正在缝制…" · 一刻钟以内完成</text>
+    </view>
+
+    <!-- 结果 -->
+    <view class="section">
+      <section-header kicker="OUTPUT" title="试穿效果" issue="{{volText}} / TRY-ON" />
+      <view class="result-frame" wx:if="{{currentResult}}">
+        <view class="result-stamp-row"><text class="text-mono result-stamp">{{volText}}</text><text class="text-mono result-stamp">TRY-ON</text></view>
+        <image src="{{currentResult.resultImageUrl}}" mode="aspectFill" class="result-img" />
+        <view class="result-footer"><text class="result-footer-text">{{currentResult.style || '试穿完成'}}</text><text class="result-footer-icon">♡</text></view>
+      </view>
+      <view class="result-frame" wx:else>
+        <view class="result-stamp-row"><text class="text-mono result-stamp">{{volText}}</text><text class="text-mono result-stamp">TRY-ON</text></view>
+        <view class="result-center">
+          <text class="result-center-icon">✦</text>
+          <text class="text-quote result-center-text">"把你的身影借给衣服，看看它如何回望。"</text>
+        </view>
+        <view class="result-footer"><text class="result-footer-text">等待生成 …</text><text class="result-footer-icon">♡</text></view>
+      </view>
+    </view>
+
+    <view style="height: 200rpx;"></view>
+  </scroll-view>
+</view>

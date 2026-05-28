@@ -30,14 +30,21 @@ __decorate([
     __metadata("design:type", String)
 ], RegisterDto.prototype, "password", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: '验证码', example: '123456' }),
-    (0, class_validator_1.IsString)({ message: '验证码必须是字符串' }),
-    (0, class_validator_1.IsNotEmpty)({ message: '验证码不能为空' }),
-    (0, class_validator_1.Length)(4, 6, { message: '验证码长度不正确' }),
+    (0, swagger_1.ApiProperty)({ description: '验证码ID', example: 'uuid-captcha-id' }),
+    (0, class_validator_1.IsString)({ message: '验证码ID必须是字符串' }),
+    (0, class_validator_1.IsNotEmpty)({ message: '验证码ID不能为空' }),
     __metadata("design:type", String)
-], RegisterDto.prototype, "code", void 0);
+], RegisterDto.prototype, "captchaId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: '昵称', example: '小明', required: false }),
+    (0, swagger_1.ApiProperty)({ description: '验证码答案', example: 'A3X7' }),
+    (0, class_validator_1.IsString)({ message: '验证码答案必须是字符串' }),
+    (0, class_validator_1.IsNotEmpty)({ message: '验证码不能为空' }),
+    (0, class_validator_1.Length)(4, 4, { message: '验证码必须为4位' }),
+    __metadata("design:type", String)
+], RegisterDto.prototype, "captchaAnswer", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: '昵称', example: '小明' }),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)({ message: '昵称必须是字符串' }),
     (0, class_validator_1.Length)(1, 20, { message: '昵称长度必须在1-20位之间' }),
     __metadata("design:type", String)

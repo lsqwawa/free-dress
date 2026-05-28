@@ -1,0 +1,28 @@
+.register-page { min-height: 100vh; background-color: var(--ecru); position: relative; }
+.nav-bar { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: var(--sp-8) var(--sp-6) var(--sp-4); }
+.nav-back { width: 64rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; }
+.nav-arrow { font-size: var(--fs-xl); color: var(--ink); }
+.scroll-wrap { height: calc(100vh - 120rpx); padding: 0 var(--sp-6) var(--sp-10); }
+.title-block { margin-bottom: var(--sp-8); }
+.title-kicker { display: block; margin-bottom: var(--sp-3); color: var(--caramel); }
+.title-main { display: block; font-size: 72rpx; line-height: 1.15; }
+.title-divider { height: 1rpx; background-color: var(--mist-gray); margin-top: var(--sp-5); }
+.form { margin-bottom: var(--sp-8); }
+.input-group { margin-bottom: var(--sp-6); }
+.input-label { display: block; margin-bottom: var(--sp-2); color: var(--ink-muted); font-size: var(--fs-xs); letter-spacing: 2rpx; }
+.input-field { width: 100%; font-size: var(--fs-md); color: var(--ink); padding: var(--sp-2) 0; background: transparent; }
+.input-placeholder { color: var(--clay); }
+.input-line { height: 2rpx; background-color: var(--ink); margin-top: var(--sp-1); }
+.input-row { display: flex; flex-direction: row; align-items: center; gap: var(--sp-3); }
+.flex-1 { flex: 1; }
+.code-btn { padding: var(--sp-2) var(--sp-4); border: 1rpx solid var(--caramel); }
+.code-btn--disabled { opacity: 0.5; }
+.code-btn-text { font-size: var(--fs-sm); color: var(--caramel); white-space: nowrap; }
+.submit-wrap { margin-top: var(--sp-4); }
+.btn-primary { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 104rpx; background-color: var(--ink); border: none; gap: var(--sp-3); }
+.btn-primary::after { border: none; }
+.btn-primary:active { transform: scale(0.97); }
+.btn-text { font-size: var(--fs-md); color: var(--cream); font-weight: 500; letter-spacing: 2rpx; }
+.btn-arrow { font-size: var(--fs-lg); color: var(--cream); }
+.login-link { text-align: center; padding: var(--sp-5) 0; }
+.link-text { color: var(--caramel); font-style: italic; }

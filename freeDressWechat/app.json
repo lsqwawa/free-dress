@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/register/register",
+    "pages/home/home",
+    "pages/wardrobe/wardrobe",
+    "pages/outfit/outfit",
+    "pages/tryon/tryon",
+    "pages/profile/profile",
+    "pages/addClothing/addClothing",
+    "pages/favorites/favorites",
+    "pages/outfitHistory/outfitHistory",
+    "pages/tryOnHistory/tryOnHistory"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#EBE4D6",
+    "navigationBarTitleText": "畅搭",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#EBE4D6",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#7A6F62",
+    "selectedColor": "#A86B3D",
+    "backgroundColor": "#1F1B16",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "HOME",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/wardrobe/wardrobe",
+        "text": "衣橱",
+        "iconPath": "assets/icons/wardrobe.png",
+        "selectedIconPath": "assets/icons/wardrobe-active.png"
+      },
+      {
+        "pagePath": "pages/tryon/tryon",
+        "text": "试穿",
+        "iconPath": "assets/icons/tryon.png",
+        "selectedIconPath": "assets/icons/tryon-active.png"
+      },
+      {
+        "pagePath": "pages/outfit/outfit",
+        "text": "搭配",
+        "iconPath": "assets/icons/outfit.png",
+        "selectedIconPath": "assets/icons/outfit-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

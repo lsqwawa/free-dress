@@ -1,0 +1,37 @@
+.section-header {
+  margin-bottom: var(--sp-4);
+  padding-right: var(--sp-6);
+}
+
+.section-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-2);
+  overflow: hidden;
+}
+
+.section-kicker {
+  color: var(--ink-muted);
+  flex-shrink: 0;
+}
+
+.section-issue {
+  color: var(--sand);
+  font-size: var(--fs-xs);
+  flex-shrink: 0;
+  max-width: 200rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.section-title {
+  margin-bottom: var(--sp-3);
+}
+
+.section-line {
+  height: 1rpx;
+  background-color: var(--mist-gray);
+}

@@ -1,0 +1,60 @@
+.wardrobe-page { min-height: 100vh; background-color: var(--ecru); display: flex; flex-direction: column; }
+.screen-header { padding: 180rpx var(--sp-6) var(--sp-4); }
+.header-top { display: flex; flex-direction: row; align-items: center; justify-content: space-between; margin-bottom: var(--sp-2);}
+.header-issue { color: var(--sand); font-size: 20rpx; }
+.header-main { display: flex; flex-direction: row; align-items: center; justify-content: space-between; margin-bottom: var(--sp-3); }
+.header-title { font-size: 56rpx; }
+.search-btn { width: 64rpx; height: 64rpx; border: 1rpx solid var(--mist-gray); display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); }
+.search-icon { font-size: var(--fs-md); color: var(--ink); }
+
+/* 分类 */
+.category-scroll { border-bottom: 1rpx solid var(--mist-gray); padding: var(--sp-3) 0; flex-shrink: 0; }
+.category-row { display: inline-flex; flex-direction: row; gap: var(--sp-3); padding: 0 var(--sp-6); white-space: nowrap; }
+.category-item { display: inline-flex; flex-direction: column; align-items: center; gap: var(--sp-1); }
+.category-tag { padding: var(--sp-1) var(--sp-3); border: 1rpx solid var(--ink); border-radius: var(--radius-full); }
+.category-tag--active { background-color: var(--ink); }
+.category-tag--active .category-tag-text { color: var(--cream); }
+.category-tag-text { font-size: var(--fs-sm); color: var(--ink); }
+.category-kicker { font-size: 16rpx; letter-spacing: 3rpx; }
+
+/* 搜索 */
+.search-bar { display: flex; flex-direction: row; align-items: center; margin: var(--sp-3) var(--sp-6); background-color: var(--cream); border: 1rpx solid var(--mist-gray); padding: var(--sp-2) var(--sp-3); gap: var(--sp-2); }
+.search-bar-icon { font-size: var(--fs-md); color: var(--ink-muted); }
+.search-input { flex: 1; font-size: var(--fs-base); color: var(--ink); }
+.search-clear { padding: var(--sp-1); }
+
+/* 列表 */
+.cloth-scroll { flex: 1; }
+.grid { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-5); }
+.card { width: calc(50% - var(--sp-2)); box-sizing: border-box; background-color: var(--cream); border: 1rpx solid var(--mist-gray); }
+.card-image { width: 100%; aspect-ratio: 3/4; background-color: var(--sand); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.card-img { width: 100%; height: 100%; }
+.card-placeholder { font-size: 56rpx; color: var(--clay); }
+.card-stamp { position: absolute; top: var(--sp-2); left: var(--sp-2); background-color: var(--ink); padding: 4rpx var(--sp-2); border-radius: var(--radius-sm); }
+.stamp-text { color: var(--cream); font-size: 20rpx; }
+.card-info { padding: var(--sp-3); }
+.card-title { display: block; font-size: var(--fs-md); margin-top: 4rpx; }
+.card-caption { font-size: var(--fs-xs); display: block; }
+
+/* 空状态 */
+.empty-state { padding: var(--sp-6); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; box-sizing: border-box; min-height: 60vh; }
+.empty-icon { font-size: 80rpx; color: var(--clay); margin-bottom: var(--sp-5); }
+.empty-kicker { margin-bottom: var(--sp-3); }
+.empty-title { margin-bottom: var(--sp-2); }
+.empty-sub { margin-bottom: var(--sp-6); max-width: 556rpx; }
+.empty-btn { display: flex; flex-direction: row; align-items: center; gap: var(--sp-2); padding: var(--sp-3) var(--sp-5); background-color: var(--ink); }
+.empty-btn-text { color: var(--cream); font-size: var(--fs-base); }
+
+/* 骨架 */
+.skeleton-img { width: 100%; aspect-ratio: 3/4; background: linear-gradient(90deg, var(--cream) 25%, var(--ecru) 50%, var(--cream) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+.skeleton-info { padding: var(--sp-3); }
+.skeleton-line { height: 24rpx; background-color: var(--mist-gray); border-radius: 4rpx; margin-top: var(--sp-2); width: 80%; }
+.skeleton-line.short { width: 40%; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* FAB */
+.fab-wrap { position: fixed; right: var(--sp-6); bottom: 200rpx; display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); z-index: 100; }
+.fab-kicker { background-color: var(--cream); border: 1rpx solid var(--mist-gray); padding: 4rpx var(--sp-2); }
+.fab-kicker-text { font-size: 16rpx; letter-spacing: 3rpx; }
+.fab-btn { width: 112rpx; height: 112rpx; border-radius: 50%; background-color: var(--caramel); display: flex; align-items: center; justify-content: center; box-shadow: 0 8rpx 24rpx rgba(168, 107, 61, 0.35); }
+.fab-icon { font-size: 48rpx; color: var(--cream); font-weight: 300; }

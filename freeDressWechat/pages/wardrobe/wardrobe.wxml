@@ -1,0 +1,102 @@
+<!-- 衣橱页 · MY WARDROBE -->
+<view class="wardrobe-page">
+  <!-- 页眉 -->
+  <view class="screen-header">
+    <view class="header-top">
+      <text class="text-kicker">MY WARDROBE</text>
+      <text class="text-mono header-issue">{{total}} PIECES</text>
+    </view>
+    <view class="header-main">
+      <text class="text-serif-title header-title">衣橱</text>
+      <view class="search-btn" bindtap="toggleSearch">
+        <text class="search-icon">{{searchOpen ? '✕' : '⌕'}}</text>
+      </view>
+    </view>
+    <view class="hairline"></view>
+  </view>
+
+  <!-- 分类 -->
+  <scroll-view scroll-x class="category-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+    <view class="category-row">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="value" 
+        class="category-item"
+        data-value="{{item.value}}"
+        bindtap="switchCategory"
+      >
+        <view class="category-tag {{activeCategory === item.value ? 'category-tag--active' : ''}}">
+          <text class="category-tag-text">{{item.label}}</text>
+        </view>
+        <text class="category-kicker text-kicker" style="color: {{activeCategory === item.value ? 'var(--caramel)' : 'var(--ink-muted)'}};">{{item.kicker}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar" wx:if="{{searchOpen}}">
+    <text class="search-bar-icon">⌕</text>
+    <input class="search-input" placeholder="搜索颜色、风格、标签…" placeholder-class="input-placeholder" value="{{searchQuery}}" bindinput="onSearch" focus="{{searchOpen}}" />
+    <view wx:if="{{searchQuery}}" class="search-clear" bindtap="clearSearch">
+      <text>✕</text>
+    </view>
+  </view>
+
+  <!-- 衣物网格 -->
+  <scroll-view scroll-y class="cloth-scroll" refresher-enabled="{{true}}" bindrefresherrefresh="onRefresh" refresher-triggered="{{refreshing}}">
+    <!-- 加载中 -->
+    <view class="grid" wx:if="{{loading}}">
+      <view class="card skeleton-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+        <view class="skeleton-img"></view>
+        <view class="skeleton-info">
+          <view class="skeleton-line short"></view>
+          <view class="skeleton-line"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:elif="{{!loading && filteredClothes.length === 0}}">
+      <text class="empty-icon">▽</text>
+      <text class="text-kicker empty-kicker">NO ENTRIES IN THIS ISSUE</text>
+      <text class="text-section-title empty-title">衣橱待编纂</text>
+      <text class="text-caption empty-sub">点击右下角按钮，让你的第一件衣物登上目录页。</text>
+      <view class="empty-btn" bindtap="goAddClothing">
+        <text class="empty-btn-text">开始上传</text>
+        <text class="empty-btn-text">→</text>
+      </view>
+    </view>
+
+    <!-- 衣物列表 -->
+    <view class="grid" wx:else>
+      <view class="card" wx:for="{{filteredClothes}}" wx:key="id" bindtap="showDetail" data-item="{{item}}" bindlongpress="handleDelete" data-id="{{item.id}}">
+        <view class="card-image">
+          <image wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" mode="aspectFill" class="card-img" />
+          <view wx:else class="card-placeholder">
+            <text>☐</text>
+          </view>
+          <view class="card-stamp">
+            <text class="text-mono stamp-text">№{{index + 1 < 10 ? '0' : ''}}{{index + 1}}</text>
+          </view>
+        </view>
+        <view class="card-info">
+          <text class="text-kicker">{{item.category}}</text>
+          <text class="text-section-title card-title">{{item.color || '未命名'}}</text>
+          <text class="text-caption card-caption">{{item.seasonText}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view style="height: 200rpx;"></view>
+  </scroll-view>
+
+  <!-- FAB -->
+  <view class="fab-wrap">
+    <view class="fab-kicker">
+      <text class="text-mono fab-kicker-text">ADD PIECE</text>
+    </view>
+    <view class="fab-btn" bindtap="goAddClothing">
+      <text class="fab-icon">+</text>
+    </view>
+  </view>
+</view>

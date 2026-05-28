@@ -1,0 +1,150 @@
+<!-- 首页 · 期刊封面 + 不对称快捷入口 + 今日推荐 + 风格电台 -->
+<view class="home-page">
+  <scroll-view scroll-y class="scroll-view" enhanced="{{true}}" show-scrollbar="{{false}}">
+    
+    <!-- A. 期刊封面 -->
+    <view class="cover grain-bg anim-fade-in-up">
+      <view class="cover-top-row">
+        <view class="cover-top-left">
+          <view class="dot-line"></view>
+          <text class="text-kicker">EDITORIAL · {{issueText}}</text>
+        </view>
+        <text class="text-mono">{{editorialDate}}</text>
+      </view>
+
+      <view class="cover-title-block">
+        <text class="cover-eyebrow text-kicker">TODAY</text>
+        <text class="cover-title text-hero">今日</text>
+        <view class="cover-second">
+          <text class="cover-title text-hero">穿什么</text>
+          <view class="cover-issue-wrap">
+            <text class="cover-issue text-mono">Date</text>
+            <text class="cover-issue-num text-serif-title">{{dayNum}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="cover-foot-row">
+        <view class="cover-divider"></view>
+        <text class="cover-tagline text-body">By FreeDress Atelier · 一刊一搭</text>
+      </view>
+    </view>
+
+    <!-- B. 不对称快捷入口 -->
+    <view class="quick-section">
+      <section-header kicker="QUICK ACCESS" title="进入栏目" issue="{{pieceCount}} PIECES" />
+      
+      <view class="quick-grid">
+        <!-- 第一行：大左 + 小右 -->
+        <view class="quick-row">
+          <view class="quick-card quick-card--large" bindtap="goWardrobe">
+            <view class="quick-icon-block" style="height: 200rpx;">
+              <text class="icon-text">📷</text>
+              <text class="text-mono quick-number">01</text>
+            </view>
+            <view class="quick-info">
+              <text class="text-kicker">UPLOAD</text>
+              <text class="text-section-title quick-title">上传新装</text>
+              <view class="quick-arrow">
+                <view class="quick-arrow-line"></view>
+                <text class="arrow-icon">→</text>
+              </view>
+            </view>
+          </view>
+          <view class="quick-card quick-card--small" bindtap="goOutfit">
+            <view class="quick-icon-block" style="height: 152rpx;">
+              <text class="icon-text">◇</text>
+              <text class="text-mono quick-number">02</text>
+            </view>
+            <view class="quick-info">
+              <text class="text-kicker">STYLE LAB</text>
+              <text class="text-section-title quick-title">智能搭配</text>
+              <view class="quick-arrow">
+                <view class="quick-arrow-line"></view>
+                <text class="arrow-icon">→</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 第二行：小左 + 大右 -->
+        <view class="quick-row">
+          <view class="quick-card quick-card--small" bindtap="goTryon">
+            <view class="quick-icon-block" style="height: 152rpx;">
+              <text class="icon-text">✦</text>
+              <text class="text-mono quick-number">03</text>
+            </view>
+            <view class="quick-info">
+              <text class="text-kicker">TRY-ON</text>
+              <text class="text-section-title quick-title">AI 试穿</text>
+              <view class="quick-arrow">
+                <view class="quick-arrow-line"></view>
+                <text class="arrow-icon">→</text>
+              </view>
+            </view>
+          </view>
+          <view class="quick-card quick-card--large" bindtap="goProfile">
+            <view class="quick-icon-block" style="height: 200rpx;">
+              <text class="icon-text">◈</text>
+              <text class="text-mono quick-number">04</text>
+            </view>
+            <view class="quick-info">
+              <text class="text-kicker">SAVED</text>
+              <text class="text-section-title quick-title">收藏柜</text>
+              <view class="quick-arrow">
+                <view class="quick-arrow-line"></view>
+                <text class="arrow-icon">→</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- C. 今日推荐 -->
+    <view class="recommend-section">
+      <section-header kicker="EDITOR'S PICK" title="今日推荐" issue="03 LOOKS" />
+      <scroll-view scroll-x class="recommend-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="recommend-list">
+          <view class="recommend-card recommend-card--wide" wx:for="{{recommendList}}" wx:key="id">
+            <view class="recommend-image" style="background-color: var(--sand);">
+              <view class="recommend-stripe"></view>
+              <view class="recommend-stripe-alt"></view>
+              <view class="recommend-stamp">
+                <text class="text-mono stamp-text">№ {{index + 1}}</text>
+              </view>
+            </view>
+            <view class="recommend-info">
+              <text class="text-kicker">STYLE · {{item.style}}</text>
+              <text class="text-section-title recommend-title">{{item.title}}</text>
+              <text class="text-caption recommend-caption">{{item.caption}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- D. 风格电台 -->
+    <view class="radio-section">
+      <section-header kicker="STYLE RADIO" title="风格电台" issue="04 BANDS" />
+      <view class="radio-grid">
+        <view class="radio-card" wx:for="{{radioList}}" wx:key="id">
+          <view class="radio-head">
+            <text class="text-mono">0{{index + 1}}</text>
+            <text class="radio-icon">♪</text>
+          </view>
+          <text class="text-section-title radio-title">{{item.style}}</text>
+          <text class="text-caption radio-caption">{{item.caption}}</text>
+          <view class="radio-foot">
+            <view class="radio-tag">
+              <text class="radio-tag-text">{{item.pieces}} 件</text>
+            </view>
+            <text class="arrow-icon">→</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view style="height: 160rpx;"></view>
+  </scroll-view>
+</view>

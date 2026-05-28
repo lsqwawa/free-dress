@@ -1,0 +1,130 @@
+<!-- 搭配实验室 · STYLE LAB -->
+<view class="outfit-page">
+  <view class="screen-header">
+    <view class="header-top">
+      <text class="text-kicker">STYLE LAB</text>
+      <text class="text-mono header-issue">DRAFT №07</text>
+    </view>
+    <text class="text-serif-title header-title">搭配实验室</text>
+    <view class="hairline"></view>
+  </view>
+
+  <scroll-view scroll-y class="scroll-content" enhanced="{{true}}" show-scrollbar="{{false}}">
+    <!-- 宣言条 -->
+    <view class="manifesto">
+      <view class="manifesto-bar"></view>
+      <view class="manifesto-body">
+        <text class="text-kicker manifesto-kicker">FROM YOUR WARDROBE</text>
+        <text class="text-quote manifesto-quote">选三五件你心仪之物，让 AI 为你拟好今日的札记。</text>
+      </view>
+    </view>
+
+    <!-- 已选衣物 -->
+    <view class="section">
+      <section-header kicker="SELECTED PIECES" title="已选衣物" issue="{{selectedCount}} ITEMS" />
+      <scroll-view scroll-x class="thumbs-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="thumbs-row">
+          <view class="add-thumb" bindtap="openPicker">
+            <text class="add-thumb-icon">+</text>
+            <text class="text-mono add-thumb-label">ADD</text>
+          </view>
+          <view class="thumb-item" wx:for="{{selectedClothes}}" wx:key="id" bindtap="removeCloth" data-id="{{item.id}}">
+            <image src="{{item.imageUrl}}" mode="aspectFill" class="thumb-img" />
+            <view class="thumb-remove"><text class="thumb-x">✕</text></view>
+          </view>
+          <view class="empty-hint" wx:if="{{selectedClothes.length === 0}}">
+            <text class="text-caption hint-text">请从衣橱挑选 3-5 件</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 风格意图 -->
+    <view class="section">
+      <section-header kicker="STYLE INTENT" title="风格意图" issue="MULTI-CHOICE" />
+      <view class="tag-wrap">
+        <view wx:for="{{styleIntents}}" wx:key="*this" class="style-tag {{intents.indexOf(item) > -1 ? 'style-tag--active' : ''}}" bindtap="toggleIntent" data-intent="{{item}}">
+          <text class="style-tag-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 主按钮 -->
+    <view class="action-bar">
+      <button class="btn-primary" bindtap="handleGenerate" loading="{{generating}}">
+        <text class="btn-text">{{generating ? '生成中...' : '生成今日搭配'}}</text>
+        <view class="action-dot" wx:if="{{!generating}}">
+          <view class="action-dot-inner"></view>
+        </view>
+      </button>
+      <text class="text-caption action-hint">预计耗时 8-12 秒 · 运用本期素材重新缝合</text>
+    </view>
+
+    <!-- 结果区 -->
+    <view class="section">
+      <section-header kicker="OUTFIT RESULT" title="拟稿" issue="{{volText}} · DRAFT" />
+      <view class="result-card" wx:if="{{currentOutfit}}">
+        <view class="result-image">
+          <view class="result-grid" wx:if="{{currentOutfit.clothes.length > 0}}">
+            <image wx:for="{{currentOutfit.clothes}}" wx:key="id" wx:if="{{index < 4}}" src="{{item.imageUrl}}" mode="aspectFill" class="result-grid-img" />
+          </view>
+          <view class="result-stamp-top">
+            <text class="text-mono" style="color: var(--cream);">{{volText}} / OUTFIT</text>
+          </view>
+        </view>
+        <view class="result-info">
+          <text class="text-section-title">{{currentOutfit.style || '你的搭配'}}</text>
+          <text class="text-quote result-caption">{{currentOutfit.aiDescription || '"穿衣是一种自我编辑。"'}}</text>
+          <view class="result-actions">
+            <view class="action-link" bindtap="handleGenerate"><text>↻ 重新生成</text></view>
+            <view class="action-divider"></view>
+            <view class="action-link" bindtap="handleFavorite"><text>♡ 收藏</text></view>
+            <view class="action-divider"></view>
+            <view class="action-link" bindtap="goTryon"><text>✦ 试穿</text></view>
+          </view>
+        </view>
+      </view>
+      <view class="result-card" wx:else>
+        <view class="result-image result-empty">
+          <view class="result-stripe"></view>
+          <view class="result-stamp-top"><text class="text-mono" style="color: var(--cream);">{{volText}} / OUTFIT</text></view>
+          <view class="result-center">
+            <text class="result-center-icon">◇</text>
+            <text class="text-mono result-placeholder">AI DRAFT WILL APPEAR HERE</text>
+          </view>
+        </view>
+        <view class="result-info">
+          <text class="text-section-title">等待第一稿 · 你的札记</text>
+          <text class="text-quote result-caption">"穿衣是一种自我编辑——挑出你今天想成为的版本。"</text>
+        </view>
+      </view>
+    </view>
+
+    <view style="height: 200rpx;"></view>
+  </scroll-view>
+
+  <!-- 衣物选择弹窗 -->
+  <view class="picker-mask {{pickerVisible ? 'picker-mask--show' : ''}}" bindtap="closePicker">
+    <view class="picker-sheet" catchtap="">
+      <view class="picker-header">
+        <text class="text-kicker">SELECT PIECES</text>
+        <view class="picker-actions">
+          <text class="picker-clear" bindtap="clearSelection">清空</text>
+          <text class="picker-close" bindtap="closePicker">✕</text>
+        </view>
+      </view>
+      <text class="text-caption picker-hint">已选 {{selectedClothes.length}} 件 · 点击选择/取消</text>
+      <scroll-view scroll-y class="picker-scroll">
+        <view class="picker-grid">
+          <view wx:for="{{allClothes}}" wx:key="id" class="picker-item {{item.selected ? 'picker-item--selected' : ''}}" bindtap="toggleCloth" data-id="{{item.id}}">
+            <image src="{{item.imageUrl}}" mode="aspectFill" class="picker-img" />
+            <view class="picker-check" wx:if="{{item.selected}}"><text class="check-icon">✓</text></view>
+          </view>
+        </view>
+      </scroll-view>
+      <button class="btn-primary picker-done" bindtap="closePicker">
+        <text class="btn-text">完成选择 ({{selectedClothes.length}})</text>
+      </button>
+    </view>
+  </view>
+</view>

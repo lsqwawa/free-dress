@@ -1,0 +1,70 @@
+<!-- 注册页 · 新刊订阅 -->
+<view class="register-page grain-bg">
+  <!-- 顶部返回 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-arrow">←</text>
+    </view>
+    <text class="text-mono">NEW SUBSCRIBER</text>
+  </view>
+
+  <scroll-view scroll-y class="scroll-wrap">
+    <!-- 标题 -->
+    <view class="title-block anim-fade-in-up">
+      <text class="text-kicker title-kicker">SUBSCRIBE · 新刊订阅</text>
+      <text class="text-serif-title title-main">开启你的</text>
+      <text class="text-serif-title title-main">衣橱专栏</text>
+      <view class="title-divider"></view>
+    </view>
+
+    <!-- 表单 -->
+    <view class="form anim-fade-in-up delay-1">
+      <view class="input-group">
+        <text class="input-label text-caption">手机号</text>
+        <input class="input-field" type="number" maxlength="11" placeholder="请输入手机号" placeholder-class="input-placeholder" value="{{phone}}" bindinput="onInput" data-field="phone" />
+        <view class="input-line"></view>
+      </view>
+
+      <view class="input-group">
+        <text class="input-label text-caption">验证码</text>
+        <view class="input-row">
+          <input class="input-field flex-1" type="number" maxlength="6" placeholder="请输入验证码" placeholder-class="input-placeholder" value="{{code}}" bindinput="onInput" data-field="code" />
+          <view class="code-btn {{codeSending ? 'code-btn--disabled' : ''}}" bindtap="sendCode">
+            <text class="code-btn-text">{{codeText}}</text>
+          </view>
+        </view>
+        <view class="input-line"></view>
+      </view>
+
+      <view class="input-group">
+        <text class="input-label text-caption">密码</text>
+        <input class="input-field" password="{{true}}" maxlength="20" placeholder="请设置密码（6-20位）" placeholder-class="input-placeholder" value="{{password}}" bindinput="onInput" data-field="password" />
+        <view class="input-line"></view>
+      </view>
+
+      <view class="input-group">
+        <text class="input-label text-caption">确认密码</text>
+        <input class="input-field" password="{{true}}" maxlength="20" placeholder="请再次输入密码" placeholder-class="input-placeholder" value="{{confirmPassword}}" bindinput="onInput" data-field="confirmPassword" />
+        <view class="input-line"></view>
+      </view>
+
+      <view class="input-group">
+        <text class="input-label text-caption">昵称</text>
+        <input class="input-field" maxlength="20" placeholder="你的笔名（选填）" placeholder-class="input-placeholder" value="{{nickname}}" bindinput="onInput" data-field="nickname" />
+        <view class="input-line"></view>
+      </view>
+    </view>
+
+    <!-- 提交 -->
+    <view class="submit-wrap anim-fade-in-up delay-3">
+      <button class="btn-primary" bindtap="handleRegister" loading="{{loading}}">
+        <text class="btn-text">订阅创刊号</text>
+        <text class="btn-arrow">→</text>
+      </button>
+
+      <view class="login-link" bindtap="goBack">
+        <text class="text-caption link-text">已有账号？返回登录</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

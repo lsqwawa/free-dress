@@ -1,0 +1,60 @@
+.home-page { min-height: 100vh; background-color: var(--ecru); }
+.scroll-view { height: 100vh; }
+
+/* === A. 封面 === */
+.cover { padding: 160rpx var(--sp-6) var(--sp-8); position: relative; overflow: hidden; }
+.cover-top-row { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: var(--sp-8); }
+.cover-top-left { display: flex; flex-direction: row; align-items: center; gap: var(--sp-2); }
+.dot-line { width: 36rpx; height: 2rpx; background-color: var(--ink); }
+.cover-title-block { margin-bottom: var(--sp-6); }
+.cover-eyebrow { display: block; color: var(--caramel); letter-spacing: 8rpx; font-size: var(--fs-xs); margin-bottom: var(--sp-2); font-weight: 600; }
+.cover-title { display: block; font-size: 120rpx; line-height: 128rpx; letter-spacing: -4rpx; }
+.cover-second { display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; }
+.cover-issue-wrap { display: flex; flex-direction: row; align-items: baseline; gap: var(--sp-1); padding-bottom: var(--sp-4); }
+.cover-issue { color: var(--caramel); }
+.cover-issue-num { color: var(--caramel); font-size: var(--fs-xl); }
+.cover-foot-row { display: flex; flex-direction: row; align-items: center; gap: var(--sp-3); }
+.cover-divider { width: 64rpx; height: 2rpx; background-color: var(--ink); }
+.cover-tagline { color: var(--ink-soft); font-style: italic; flex: 1; }
+
+/* === B. 快捷入口 === */
+.quick-section { padding: var(--sp-6) var(--sp-6) 0; }
+.quick-grid { margin-top: var(--sp-5); }
+.quick-row { display: flex; flex-direction: row; gap: var(--sp-3); margin-bottom: var(--sp-3); }
+.quick-card { background-color: var(--cream); border: 1rpx solid var(--mist-gray); overflow: hidden; }
+.quick-card--large { flex: 1.4; }
+.quick-card--small { flex: 1; }
+.quick-icon-block { background-color: var(--ink); padding: var(--sp-3) var(--sp-4); display: flex; flex-direction: row; align-items: center; justify-content: space-between; }
+.icon-text { font-size: 48rpx; }
+.quick-number { color: var(--cream); font-size: var(--fs-sm); }
+.quick-info { padding: var(--sp-4); }
+.quick-title { display: block; font-size: 38rpx; margin-top: var(--sp-1); }
+.quick-arrow { display: flex; flex-direction: row; align-items: center; gap: var(--sp-2); margin-top: var(--sp-3); }
+.quick-arrow-line { flex: 1; height: 1rpx; background-color: var(--ink); }
+.arrow-icon { font-size: var(--fs-md); color: var(--ink); }
+
+/* === C. 推荐 === */
+.recommend-section { margin-top: var(--sp-10); padding-left: var(--sp-6); }
+.recommend-scroll { width: 100%; white-space: nowrap; }
+.recommend-list { display: inline-flex; flex-direction: row; gap: var(--sp-4); padding-top: var(--sp-5); padding-right: var(--sp-6); }
+.recommend-card { width: 560rpx; background-color: var(--cream); border: 1rpx solid var(--mist-gray); display: inline-block; vertical-align: top; white-space: normal; }
+.recommend-image { width: 100%; height: 420rpx; position: relative; overflow: hidden; }
+.recommend-stripe { position: absolute; top: 20%; left: -10%; right: -10%; height: 80rpx; background-color: var(--ink); opacity: 0.08; transform: rotate(-8deg); }
+.recommend-stripe-alt { position: absolute; bottom: 15%; left: -10%; right: -10%; height: 48rpx; background-color: var(--caramel); opacity: 0.4; transform: rotate(6deg); }
+.recommend-stamp { position: absolute; top: var(--sp-3); right: var(--sp-3); background-color: var(--ink); padding: var(--sp-1) var(--sp-2); border-radius: var(--radius-sm); }
+.stamp-text { color: var(--cream); font-size: var(--fs-xs); }
+.recommend-info { padding: var(--sp-4); }
+.recommend-title { display: block; margin: var(--sp-1) 0 var(--sp-2); }
+.recommend-caption { font-style: italic; display: block; }
+
+/* === D. 风格电台 === */
+.radio-section { margin-top: var(--sp-10); padding: 0 var(--sp-6); }
+.radio-grid { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-5); }
+.radio-card { width: calc(50% - var(--sp-2)); box-sizing: border-box; padding: var(--sp-5) var(--sp-4); border: 1rpx solid var(--mist-gray); background-color: var(--cream); min-height: 280rpx; display: flex; flex-direction: column; }
+.radio-head { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: var(--sp-4); }
+.radio-icon { font-size: var(--fs-md); color: var(--ink-soft); }
+.radio-title { font-size: var(--fs-lg); display: block; }
+.radio-caption { margin-top: var(--sp-1); font-style: italic; flex: 1; display: block; }
+.radio-foot { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1rpx solid var(--mist-gray); }
+.radio-tag { padding: var(--sp-1) var(--sp-2); border: 1rpx solid var(--ink); border-radius: var(--radius-full); }
+.radio-tag-text { font-size: var(--fs-xs); color: var(--ink); }

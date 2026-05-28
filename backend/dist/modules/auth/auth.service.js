@@ -13,15 +13,24 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const prisma_service_1 = require("../../prisma/prisma.service");
+const captcha_service_1 = require("./captcha.service");
+const uuid_1 = require("uuid");
 const bcrypt = require("bcryptjs");
 let AuthService = class AuthService {
-    constructor(prisma, jwtService) {
+    constructor(prisma, jwtService, captchaService) {
         this.prisma = prisma;
         this.jwtService = jwtService;
+        this.captchaService = captchaService;
+        this.resetTokens = new Map();
+        this.RESET_TOKEN_TTL = 10 * 60 * 1000;
+        setInterval(() => this.cleanupResetTokens(), 60 * 1000);
     }
     async register(registerDto) {
-        const { phone, password, nickname } = registerDto;
-        console.log('注册信息:', registerDto);
+        const { phone, password, captchaId, captchaAnswer, nickname } = registerDto;
+        const isCaptchaValid = this.captchaService.verify(captchaId, captchaAnswer);
+        if (!isCaptchaValid) {
+            throw new common_1.BadRequestException('验证码错误');
+        }
         try {
             const existingUser = await this.prisma.user.findUnique({
                 where: { phone },
@@ -102,6 +111,54 @@ let AuthService = class AuthService {
             refreshToken,
         };
     }
+    async forgotPassword(phone, captchaId, captchaAnswer) {
+        const isCaptchaValid = this.captchaService.verify(captchaId, captchaAnswer);
+        if (!isCaptchaValid) {
+            throw new common_1.BadRequestException('验证码错误');
+        }
+        const user = await this.prisma.user.findUnique({
+            where: { phone },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException('该手机号未注册');
+        }
+        const resetToken = (0, uuid_1.v4)();
+        this.resetTokens.set(resetToken, {
+            userId: user.id,
+            createdAt: Date.now(),
+        });
+        return {
+            resetToken,
+            message: '验证成功，请设置新密码',
+        };
+    }
+    async resetPassword(resetPasswordDto) {
+        const { resetToken, newPassword } = resetPasswordDto;
+        const entry = this.resetTokens.get(resetToken);
+        if (!entry) {
+            throw new common_1.BadRequestException('重置令牌无效或已过期');
+        }
+        if (Date.now() - entry.createdAt > this.RESET_TOKEN_TTL) {
+            this.resetTokens.delete(resetToken);
+            throw new common_1.BadRequestException('重置令牌已过期，请重新操作');
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        await this.prisma.user.update({
+            where: { id: entry.userId },
+            data: { password: hashedPassword },
+        });
+        this.resetTokens.delete(resetToken);
+        return { message: '密码重置成功' };
+    }
+    cleanupResetTokens() {
+        const now = Date.now();
+        for (const [token, entry] of this.resetTokens.entries()) {
+            if (now - entry.createdAt > this.RESET_TOKEN_TTL) {
+                this.resetTokens.delete(token);
+            }
+        }
+    }
     async validateUser(userId) {
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
@@ -123,6 +180,7 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        captcha_service_1.CaptchaService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

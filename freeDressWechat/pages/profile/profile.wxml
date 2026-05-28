@@ -1,0 +1,81 @@
+<!-- 个人中心 · ATELIER · YOU -->
+<view class="profile-page">
+  <view class="screen-header">
+    <view class="header-top">
+      <text class="text-kicker">ATELIER · YOU</text>
+      <text class="text-mono header-issue">MEMBER №001</text>
+    </view>
+    <view class="header-main">
+      <text class="text-serif-title header-title">我的</text>
+      <view class="edit-btn" bindtap="goEditProfile">
+        <text class="edit-icon">✎</text>
+      </view>
+    </view>
+    <view class="hairline"></view>
+  </view>
+
+  <scroll-view scroll-y class="scroll-content" enhanced="{{true}}" show-scrollbar="{{false}}" refresher-enabled="{{true}}" bindrefresherrefresh="onRefresh" refresher-triggered="{{refreshing}}">
+    <!-- 用户卡 -->
+    <view class="user-card">
+      <view class="user-top-row">
+        <text class="text-kicker user-kicker">{{estYear}}</text>
+        <text class="text-mono user-issue">{{volText}}</text>
+      </view>
+      <view class="user-body">
+        <view class="avatar">
+          <text class="avatar-text">{{avatarChar}}</text>
+        </view>
+        <view class="user-info">
+          <text class="user-nickname">{{userInfo.nickname || '匿名读者'}}</text>
+          <text class="text-mono user-phone">{{userInfo.phone || '+86 ··· ···· ····'}}</text>
+        </view>
+      </view>
+      <view class="user-divider"></view>
+      <view class="user-tagline">
+        <text class="tagline-icon">✦</text>
+        <text class="text-caption tagline-text">"我的衣橱，是我书写的另一本日记。"</text>
+      </view>
+    </view>
+
+    <!-- 统计 -->
+    <view class="stats-block">
+      <section-header kicker="EDITORIAL STATS" title="编辑数据" issue="CURRENT" />
+      <view class="stats-grid">
+        <view class="stat-cell" wx:for="{{stats}}" wx:key="no">
+          <text class="text-mono stat-no">{{item.no}}</text>
+          <text class="text-serif-title stat-value">{{item.value}}</text>
+          <text class="text-kicker stat-kicker">{{item.kicker}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 菜单 -->
+    <view class="menu-block">
+      <section-header kicker="DIRECTORY" title="目录" issue="06 PAGES" />
+      <view class="menu-list">
+        <view class="menu-item" wx:for="{{menuItems}}" wx:key="no" bindtap="onMenuTap" data-item="{{item}}">
+          <view class="menu-left">
+            <text class="text-mono menu-no">№{{item.no}}</text>
+            <text class="menu-icon">{{item.icon}}</text>
+            <text class="text-body menu-title">{{item.title}}</text>
+          </view>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 登出 -->
+    <view class="logout-wrap">
+      <button class="btn-outline" bindtap="handleLogout">
+        <text class="btn-outline-text">退订本期 · 登出</text>
+      </button>
+      <view class="version-row">
+        <view class="version-line"></view>
+        <text class="text-mono version-text">畅搭 · 0.1.0 · COUTURE</text>
+        <view class="version-line"></view>
+      </view>
+    </view>
+
+    <view style="height: 200rpx;"></view>
+  </scroll-view>
+</view>

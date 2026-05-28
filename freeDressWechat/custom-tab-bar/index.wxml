@@ -1,0 +1,29 @@
+<!-- 自定义 TabBar · Editorial Couture -->
+<view class="tab-bar">
+  <!-- 顶部指示器 -->
+  <view class="tab-indicator" style="left: {{indicatorLeft}}px; width: {{indicatorWidth}}px;"></view>
+  <!-- 顶部 hairline -->
+  <view class="tab-topline"></view>
+  
+  <view class="tab-items">
+    <view 
+      wx:for="{{list}}" 
+      wx:key="index" 
+      class="tab-item {{index === selected ? 'tab-item--active' : ''}} {{index === 2 ? 'tab-item--center' : ''}}"
+      data-path="{{item.pagePath}}"
+      data-index="{{index}}"
+      bindtap="switchTab"
+    >
+      <!-- 中心试穿按钮 -->
+      <block wx:if="{{index === 2}}">
+        <view class="tab-center-btn">
+          <image class="tab-icon-center" src="{{index === selected ? item.selectedIconPath : item.iconPath}}" mode="aspectFit" />
+        </view>
+      </block>
+      <block wx:else>
+        <image class="tab-icon" src="{{index === selected ? item.selectedIconPath : item.iconPath}}" mode="aspectFit" />
+        <text class="tab-label {{index === selected ? 'tab-label--active' : ''}}">{{item.text}}</text>
+      </block>
+    </view>
+  </view>
+</view>

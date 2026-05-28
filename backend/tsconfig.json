@@ -1,4 +1,5 @@
 {
+  "exclude": ["prisma/seed.ts", "dist"],
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
