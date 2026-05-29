@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CaptchaService } from './captcha.service';
+import { WechatService } from './wechat.service';
 import * as bcrypt from 'bcryptjs';
 
 describe('AuthService', () => {
@@ -11,6 +12,7 @@ describe('AuthService', () => {
   let prisma: any;
   let jwtService: any;
   let captchaService: any;
+  let wechatService: any;
 
   const mockUser = {
     id: 'user-1',
@@ -46,12 +48,19 @@ describe('AuthService', () => {
       verify: jest.fn().mockReturnValue(true),
     };
 
+    wechatService = {
+      mpCode2Session: jest.fn(),
+      appCode2AccessToken: jest.fn(),
+      getAppUserInfo: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
         { provide: PrismaService, useValue: prisma },
         { provide: JwtService, useValue: jwtService },
         { provide: CaptchaService, useValue: captchaService },
+        { provide: WechatService, useValue: wechatService },
       ],
     }).compile();
 

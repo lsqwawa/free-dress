@@ -17,9 +17,9 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
         user: {
-            id: string;
             phone: string;
             nickname: string;
+            id: string;
             avatarUrl: string;
             role: import(".prisma/client").$Enums.UserRole;
             createdAt: Date;
@@ -59,9 +59,9 @@ export declare class AuthService {
     }>;
     private cleanupResetTokens;
     validateUser(userId: string): Promise<{
-        id: string;
         phone: string;
         nickname: string;
+        id: string;
         avatarUrl: string;
         role: import(".prisma/client").$Enums.UserRole;
     }>;

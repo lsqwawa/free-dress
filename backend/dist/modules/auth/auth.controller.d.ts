@@ -17,9 +17,9 @@ export declare class AuthController {
         accessToken: string;
         refreshToken: string;
         user: {
-            id: string;
             phone: string;
             nickname: string;
+            id: string;
             avatarUrl: string;
             role: import(".prisma/client").$Enums.UserRole;
             createdAt: Date;

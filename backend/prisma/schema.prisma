@@ -48,6 +48,7 @@ model User {
 enum UserRole {
   USER  // 普通用户
   VIP   // VIP用户
+  ADMIN // 管理员
 }
 
 // 注册来源枚举

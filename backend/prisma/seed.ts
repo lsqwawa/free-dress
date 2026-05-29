@@ -17,6 +17,18 @@ async function main() {
   // 创建测试用户
   const passwordHash = await bcrypt.hash('123456', 10);
 
+  // 创建默认管理员
+  const adminPasswordHash = await bcrypt.hash('admin123', 10);
+  const admin = await prisma.user.create({
+    data: {
+      phone: 'admin',
+      password: adminPasswordHash,
+      nickname: '系统管理员',
+      role: 'ADMIN',
+    },
+  });
+  console.log(`✅ 创建管理员: ${admin.nickname} (phone=admin, password=admin123)`);
+
   const user1 = await prisma.user.create({
     data: {
       phone: '13800000001',

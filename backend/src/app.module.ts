@@ -12,6 +12,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { OutfitsModule } from './modules/outfits/outfits.module';
 import { TryonModule } from './modules/tryon/tryon.module';
 import { MembershipModule } from './modules/membership/membership.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { CustomThrottlerGuard } from './common/guards/custom-throttler.guard';
 
 @Module({
@@ -37,6 +38,7 @@ import { CustomThrottlerGuard } from './common/guards/custom-throttler.guard';
     OutfitsModule,
     TryonModule,
     MembershipModule,
+    AdminModule,
   ],
   providers: [
     {

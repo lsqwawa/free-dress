@@ -21,6 +21,7 @@ const upload_module_1 = require("./modules/upload/upload.module");
 const outfits_module_1 = require("./modules/outfits/outfits.module");
 const tryon_module_1 = require("./modules/tryon/tryon.module");
 const membership_module_1 = require("./modules/membership/membership.module");
+const admin_module_1 = require("./modules/admin/admin.module");
 const custom_throttler_guard_1 = require("./common/guards/custom-throttler.guard");
 let AppModule = class AppModule {
 };
@@ -48,6 +49,7 @@ exports.AppModule = AppModule = __decorate([
             outfits_module_1.OutfitsModule,
             tryon_module_1.TryonModule,
             membership_module_1.MembershipModule,
+            admin_module_1.AdminModule,
         ],
         providers: [
             {
