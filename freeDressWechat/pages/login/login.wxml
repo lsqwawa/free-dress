@@ -76,6 +76,11 @@
         <text class="btn-outline-text">创建新账号</text>
         <text class="btn-outline-icon">+</text>
       </button>
+
+      <!-- 微信一键登录 -->
+      <button class="btn-wechat" bindtap="handleWechatLogin" loading="{{wechatLoading}}">
+        <text class="btn-wechat-text">微信一键登录</text>
+      </button>
     </view>
   </view>
 

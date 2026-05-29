@@ -23,8 +23,9 @@ Page({
       { no: '02', title: '搭配历史', icon: '⏱', route: '/pages/outfitHistory/outfitHistory' },
       { no: '03', title: '试穿记录', icon: '◑', route: '/pages/tryOnHistory/tryOnHistory' },
       { no: '04', title: '会员中心', icon: '✦', route: '/pages/membership/membership' },
-      { no: '05', title: '设置', icon: '⚙', route: '/pages/settings/settings' },
-      { no: '06', title: '帮助与反馈', icon: '?', route: '' },
+      { no: '05', title: '账号与安全', icon: '⚿', route: '/pages/accountSecurity/accountSecurity' },
+      { no: '06', title: '设置', icon: '⚙', route: '/pages/settings/settings' },
+      { no: '07', title: '帮助与反馈', icon: '?', route: '' },
     ],
   },
 

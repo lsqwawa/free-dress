@@ -29,4 +29,13 @@ __decorate([
     (0, class_validator_1.Length)(6, 20, { message: '密码长度必须在6-20位之间' }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "password", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: '可选：小程序 wx.login() 返回的 code（用于自动绑定微信）',
+        required: false,
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], LoginDto.prototype, "wechatCode", void 0);
 //# sourceMappingURL=login.dto.js.map

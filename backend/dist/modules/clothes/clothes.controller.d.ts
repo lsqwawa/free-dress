@@ -6,11 +6,11 @@ export declare class ClothesController {
     private readonly clothesService;
     constructor(clothesService: ClothesService);
     create(userId: string, createClothDto: CreateClothDto): Promise<{
-        tags: string[];
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        tags: string[];
         imageUrl: string;
         category: import(".prisma/client").$Enums.ClothCategory;
         color: string | null;
@@ -18,11 +18,11 @@ export declare class ClothesController {
         season: string[];
     }>;
     findAll(userId: string, category?: ClothCategory): Promise<{
-        tags: string[];
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        tags: string[];
         imageUrl: string;
         category: import(".prisma/client").$Enums.ClothCategory;
         color: string | null;
@@ -41,16 +41,16 @@ export declare class ClothesController {
                 occasion: string | null;
             };
         } & {
-            outfitId: string;
-            clothId: string;
             order: number;
+            clothId: string;
+            outfitId: string;
         })[];
     } & {
-        tags: string[];
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        tags: string[];
         imageUrl: string;
         category: import(".prisma/client").$Enums.ClothCategory;
         color: string | null;
@@ -58,11 +58,11 @@ export declare class ClothesController {
         season: string[];
     }>;
     update(id: string, userId: string, updateClothDto: UpdateClothDto): Promise<{
-        tags: string[];
         id: string;
         createdAt: Date;
         updatedAt: Date;
         userId: string;
+        tags: string[];
         imageUrl: string;
         category: import(".prisma/client").$Enums.ClothCategory;
         color: string | null;

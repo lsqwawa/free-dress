@@ -13,6 +13,8 @@
     "pages/editProfile/editProfile",
     "pages/settings/settings",
     "pages/membership/membership",
+    "pages/accountSecurity/accountSecurity",
+    "pages/bindPhone/bindPhone",
     "pages/addClothing/addClothing",
     "pages/editClothing/editClothing",
     "pages/favorites/favorites",

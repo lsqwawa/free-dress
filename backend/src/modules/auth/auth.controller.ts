@@ -6,6 +6,13 @@ import { CaptchaService } from './captcha.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import {
+  WechatMpLoginDto,
+  WechatAppLoginDto,
+  BindPhoneDto,
+  BindWechatMpDto,
+  BindWechatAppDto,
+} from './dto/wechat.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
@@ -44,9 +51,97 @@ export class AuthController {
    * 用户登录
    */
   @Post('login')
-  @ApiOperation({ summary: '用户登录', description: '使用手机号和密码登录' })
-  async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  @ApiOperation({
+    summary: '用户登录',
+    description: '使用手机号和密码登录；小程序端可附带 wechatCode 触发自动绑定微信',
+  })
+  async login(@Body() loginDto: LoginDto, @Req() req: Request) {
+    return this.authService.login(loginDto, { ip: req.ip || req.socket.remoteAddress });
+  }
+
+  /**
+   * 小程序微信登录
+   */
+  @Post('wechat/mp-login')
+  @ApiOperation({
+    summary: '小程序微信登录',
+    description: '使用 wx.login() 返回的 code 进行登录，未注册时自动建号',
+  })
+  async wechatMpLogin(@Body() dto: WechatMpLoginDto, @Req() req: Request) {
+    return this.authService.wechatMpLogin(dto, { ip: req.ip || req.socket.remoteAddress });
+  }
+
+  /**
+   * App 微信登录
+   */
+  @Post('wechat/app-login')
+  @ApiOperation({
+    summary: 'App 微信登录',
+    description: '使用微信 OpenSDK 授权回调的 code 进行登录，未注册时自动建号',
+  })
+  async wechatAppLogin(@Body() dto: WechatAppLoginDto, @Req() req: Request) {
+    return this.authService.wechatAppLogin(dto, { ip: req.ip || req.socket.remoteAddress });
+  }
+
+  /**
+   * 已登录账号绑定手机号
+   */
+  @Post('bind/phone')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '绑定手机号', description: '为已登录账号补充手机号和密码' })
+  async bindPhone(
+    @CurrentUser('sub') userId: string,
+    @Body() dto: BindPhoneDto,
+    @Req() req: Request,
+  ) {
+    return this.authService.bindPhone(userId, dto, { ip: req.ip || req.socket.remoteAddress });
+  }
+
+  /**
+   * 已登录账号绑定小程序微信
+   */
+  @Post('bind/wechat-mp')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '绑定小程序微信', description: '为已登录账号绑定当前小程序微信' })
+  async bindWechatMp(
+    @CurrentUser('sub') userId: string,
+    @Body() dto: BindWechatMpDto,
+    @Req() req: Request,
+  ) {
+    return this.authService.bindWechatMp(userId, dto, { ip: req.ip || req.socket.remoteAddress });
+  }
+
+  /**
+   * 已登录账号绑定 App 微信
+   */
+  @Post('bind/wechat-app')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '绑定 App 微信', description: '为已登录账号绑定当前移动应用微信' })
+  async bindWechatApp(
+    @CurrentUser('sub') userId: string,
+    @Body() dto: BindWechatAppDto,
+    @Req() req: Request,
+  ) {
+    return this.authService.bindWechatApp(userId, dto, { ip: req.ip || req.socket.remoteAddress });
+  }
+
+  /**
+   * 解绑微信
+   */
+  @Post('unbind/wechat')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '解绑微信', description: '解绑指定平台的微信账号（要求已绑手机号 + 密码）' })
+  async unbindWechat(
+    @CurrentUser('sub') userId: string,
+    @Body() body: { platform: 'APP' | 'MP' },
+    @Req() req: Request,
+  ) {
+    const platform = body?.platform === 'APP' ? 'APP' : 'MP';
+    return this.authService.unbindWechat(userId, platform, { ip: req.ip || req.socket.remoteAddress });
   }
 
   /**

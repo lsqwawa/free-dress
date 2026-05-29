@@ -1,0 +1,60 @@
+<!-- 绑定手机号页 -->
+<view class="bind-page grain-bg">
+  <view class="header">
+    <text class="text-kicker">ACCOUNT · BIND PHONE</text>
+    <text class="title text-hero">绑定手机号</text>
+    <text class="subtitle text-body">绑定后可使用手机号 + 密码跨端登录</text>
+  </view>
+
+  <view class="form-container">
+    <view class="input-group">
+      <text class="input-label text-caption">手机号</text>
+      <input
+        class="input-field"
+        type="number"
+        maxlength="11"
+        placeholder="请输入手机号"
+        placeholder-class="input-placeholder"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+      />
+      <view class="input-line"></view>
+    </view>
+
+    <view class="input-group">
+      <text class="input-label text-caption">设置密码</text>
+      <input
+        class="input-field"
+        password="{{true}}"
+        maxlength="20"
+        placeholder="6-20 位字符"
+        placeholder-class="input-placeholder"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+      />
+      <view class="input-line"></view>
+    </view>
+
+    <view class="input-group">
+      <text class="input-label text-caption">图形验证码</text>
+      <view class="captcha-row">
+        <input
+          class="input-field captcha-input"
+          maxlength="6"
+          placeholder="请输入验证码"
+          placeholder-class="input-placeholder"
+          value="{{captchaAnswer}}"
+          bindinput="onCaptchaInput"
+        />
+        <view class="captcha-svg" bindtap="refreshCaptcha">
+          <rich-text nodes="{{captchaSvg}}"></rich-text>
+        </view>
+      </view>
+      <view class="input-line"></view>
+    </view>
+
+    <button class="btn-primary" bindtap="handleSubmit" loading="{{loading}}">
+      <text class="btn-text">确认绑定</text>
+    </button>
+  </view>
+</view>

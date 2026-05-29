@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
    * @param payload JWT 载荷
    * @returns 用户信息
    */
-  async validate(payload: { sub: string; phone: string }) {
+  async validate(payload: { sub: string; phone?: string }) {
     // 根据用户ID验证用户是否存在
     const user = await this.authService.validateUser(payload.sub);
     

@@ -5,14 +5,24 @@
 // 用户角色
 export type UserRole = 'USER' | 'VIP';
 
+// 注册来源
+export type RegisterSource = 'PHONE' | 'WECHAT_APP' | 'WECHAT_MP';
+
 // 用户信息
 export interface User {
   id: string;
-  phone: string;
+  /** 纯微信账号可能没有手机号 */
+  phone?: string | null;
   nickname: string;
   avatarUrl?: string;
   role: UserRole;
   createdAt: string;
+  // 绑定状态（后端 serializeUser 返回）
+  registerSource?: RegisterSource;
+  hasPhone?: boolean;
+  hasWechatMp?: boolean;
+  hasWechatApp?: boolean;
+  needBindPhone?: boolean;
 }
 
 // 衣物分类
@@ -85,6 +95,8 @@ export type RootStackParamList = {
   ChangePassword: undefined;
   EditClothing: { clothId: string };
   Membership: undefined;
+  AccountSecurity: undefined;
+  BindPhone: undefined;
 };
 
 export type WardrobeStackParamList = {

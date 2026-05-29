@@ -13,6 +13,7 @@ const passport_1 = require("@nestjs/passport");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const captcha_service_1 = require("./captcha.service");
+const wechat_service_1 = require("./wechat.service");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 let AuthModule = class AuthModule {
 };
@@ -29,8 +30,8 @@ exports.AuthModule = AuthModule = __decorate([
             }),
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, captcha_service_1.CaptchaService, jwt_strategy_1.JwtStrategy],
-        exports: [auth_service_1.AuthService, captcha_service_1.CaptchaService],
+        providers: [auth_service_1.AuthService, captcha_service_1.CaptchaService, wechat_service_1.WechatService, jwt_strategy_1.JwtStrategy],
+        exports: [auth_service_1.AuthService, captcha_service_1.CaptchaService, wechat_service_1.WechatService],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

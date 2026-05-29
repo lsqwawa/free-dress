@@ -4,6 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { CaptchaService } from './captcha.service';
+import { WechatService } from './wechat.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 /**
@@ -23,7 +24,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, CaptchaService, JwtStrategy],
-  exports: [AuthService, CaptchaService],
+  providers: [AuthService, CaptchaService, WechatService, JwtStrategy],
+  exports: [AuthService, CaptchaService, WechatService],
 })
 export class AuthModule {}

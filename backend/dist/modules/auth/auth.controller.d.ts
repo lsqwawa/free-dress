@@ -4,6 +4,7 @@ import { CaptchaService } from './captcha.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { WechatMpLoginDto, WechatAppLoginDto, BindPhoneDto, BindWechatMpDto, BindWechatAppDto } from './dto/wechat.dto';
 export declare class AuthController {
     private readonly authService;
     private readonly captchaService;
@@ -24,17 +25,124 @@ export declare class AuthController {
             createdAt: Date;
         };
     }>;
-    login(loginDto: LoginDto): Promise<{
+    login(loginDto: LoginDto, req: Request): Promise<{
         accessToken: string;
         refreshToken: string;
         user: {
-            id: string;
-            phone: string;
-            nickname: string;
-            avatarUrl: string;
-            role: import(".prisma/client").$Enums.UserRole;
-            createdAt: Date;
+            id: any;
+            phone: any;
+            nickname: any;
+            avatarUrl: any;
+            role: any;
+            registerSource: any;
+            hasPhone: boolean;
+            hasWechatMp: boolean;
+            hasWechatApp: boolean;
+            needBindPhone: boolean;
+            createdAt: any;
         };
+        autoBindResult: "OK" | "CONFLICT" | "ALREADY_BOUND" | "SKIP";
+    }>;
+    wechatMpLogin(dto: WechatMpLoginDto, req: Request): Promise<{
+        accessToken: string;
+        refreshToken: string;
+        user: {
+            id: any;
+            phone: any;
+            nickname: any;
+            avatarUrl: any;
+            role: any;
+            registerSource: any;
+            hasPhone: boolean;
+            hasWechatMp: boolean;
+            hasWechatApp: boolean;
+            needBindPhone: boolean;
+            createdAt: any;
+        };
+    }>;
+    wechatAppLogin(dto: WechatAppLoginDto, req: Request): Promise<{
+        accessToken: string;
+        refreshToken: string;
+        user: {
+            id: any;
+            phone: any;
+            nickname: any;
+            avatarUrl: any;
+            role: any;
+            registerSource: any;
+            hasPhone: boolean;
+            hasWechatMp: boolean;
+            hasWechatApp: boolean;
+            needBindPhone: boolean;
+            createdAt: any;
+        };
+    }>;
+    bindPhone(userId: string, dto: BindPhoneDto, req: Request): Promise<{
+        accessToken: string;
+        refreshToken: string;
+        user: {
+            id: any;
+            phone: any;
+            nickname: any;
+            avatarUrl: any;
+            role: any;
+            registerSource: any;
+            hasPhone: boolean;
+            hasWechatMp: boolean;
+            hasWechatApp: boolean;
+            needBindPhone: boolean;
+            createdAt: any;
+        };
+    }>;
+    bindWechatMp(userId: string, dto: BindWechatMpDto, req: Request): Promise<{
+        user: {
+            id: any;
+            phone: any;
+            nickname: any;
+            avatarUrl: any;
+            role: any;
+            registerSource: any;
+            hasPhone: boolean;
+            hasWechatMp: boolean;
+            hasWechatApp: boolean;
+            needBindPhone: boolean;
+            createdAt: any;
+        };
+        message: string;
+    }>;
+    bindWechatApp(userId: string, dto: BindWechatAppDto, req: Request): Promise<{
+        user: {
+            id: any;
+            phone: any;
+            nickname: any;
+            avatarUrl: any;
+            role: any;
+            registerSource: any;
+            hasPhone: boolean;
+            hasWechatMp: boolean;
+            hasWechatApp: boolean;
+            needBindPhone: boolean;
+            createdAt: any;
+        };
+        message: string;
+    }>;
+    unbindWechat(userId: string, body: {
+        platform: 'APP' | 'MP';
+    }, req: Request): Promise<{
+        user: {
+            id: any;
+            phone: any;
+            nickname: any;
+            avatarUrl: any;
+            role: any;
+            registerSource: any;
+            hasPhone: boolean;
+            hasWechatMp: boolean;
+            hasWechatApp: boolean;
+            needBindPhone: boolean;
+            createdAt: any;
+        };
+        message: string;
     }>;
     forgotPassword(body: {
         phone: string;

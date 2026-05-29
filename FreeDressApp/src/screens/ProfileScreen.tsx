@@ -47,8 +47,9 @@ const MENU_ITEMS: MenuItem[] = [
   { no: '02', title: '搭配历史', iconName: 'clock', route: 'OutfitHistory' },
   { no: '03', title: '试穿记录', iconName: 'image', route: 'TryOnHistory' },
   { no: '04', title: '会员中心', iconName: 'award', route: 'Membership' },
-  { no: '05', title: '设置', iconName: 'settings', route: 'Settings' },
-  { no: '06', title: '帮助与反馈', iconName: 'help-circle' },
+  { no: '05', title: '账号与安全', iconName: 'shield', route: 'AccountSecurity' },
+  { no: '06', title: '设置', iconName: 'settings', route: 'Settings' },
+  { no: '07', title: '帮助与反馈', iconName: 'help-circle' },
 ];
 
 function ProfileScreen() {

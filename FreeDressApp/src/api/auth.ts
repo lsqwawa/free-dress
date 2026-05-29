@@ -98,3 +98,58 @@ export const refreshToken = async (): Promise<ApiResponse<{ accessToken: string;
 export const getProfile = async (): Promise<ApiResponse<User>> => {
   return apiClient.get('/auth/profile') as Promise<ApiResponse<User>>;
 };
+
+// ============================================================
+//                     微信登录 / 绑定
+// ============================================================
+
+/**
+ * App 端微信登录
+ * @param code 微信 OpenSDK 授权回调的 code
+ */
+export const wechatAppLogin = async (
+  code: string,
+): Promise<ApiResponse<LoginResponse>> => {
+  return apiClient.post('/auth/wechat/app-login', { code }) as Promise<
+    ApiResponse<LoginResponse>
+  >;
+};
+
+/**
+ * 已登录账号绑定手机号（需 JWT）
+ */
+export const bindPhone = async (
+  phone: string,
+  password: string,
+  captchaId: string,
+  captchaAnswer: string,
+): Promise<ApiResponse<LoginResponse>> => {
+  return apiClient.post('/auth/bind/phone', {
+    phone,
+    password,
+    captchaId,
+    captchaAnswer,
+  }) as Promise<ApiResponse<LoginResponse>>;
+};
+
+/**
+ * 已登录账号绑定 App 端微信
+ */
+export const bindWechatApp = async (
+  code: string,
+): Promise<ApiResponse<{ user: User; message: string }>> => {
+  return apiClient.post('/auth/bind/wechat-app', { code }) as Promise<
+    ApiResponse<{ user: User; message: string }>
+  >;
+};
+
+/**
+ * 解绑微信
+ */
+export const unbindWechat = async (
+  platform: 'APP' | 'MP' = 'APP',
+): Promise<ApiResponse<{ user: User; message: string }>> => {
+  return apiClient.post('/auth/unbind/wechat', { platform }) as Promise<
+    ApiResponse<{ user: User; message: string }>
+  >;
+};

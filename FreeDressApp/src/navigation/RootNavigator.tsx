@@ -23,6 +23,8 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 import EditClothingScreen from '../screens/EditClothingScreen';
 import MembershipScreen from '../screens/MembershipScreen';
+import AccountSecurityScreen from '../screens/AccountSecurityScreen';
+import BindPhoneScreen from '../screens/BindPhoneScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -78,6 +80,8 @@ function RootNavigator() {
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
             <Stack.Screen name="EditClothing" component={EditClothingScreen} />
             <Stack.Screen name="Membership" component={MembershipScreen} />
+            <Stack.Screen name="AccountSecurity" component={AccountSecurityScreen} />
+            <Stack.Screen name="BindPhone" component={BindPhoneScreen} />
           </>
         ) : (
           <>

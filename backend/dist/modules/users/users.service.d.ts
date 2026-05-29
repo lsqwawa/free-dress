@@ -4,9 +4,9 @@ export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     findById(userId: string): Promise<{
-        id: string;
         phone: string;
         nickname: string;
+        id: string;
         avatarUrl: string;
         role: import(".prisma/client").$Enums.UserRole;
         createdAt: Date;
@@ -18,9 +18,9 @@ export declare class UsersService {
         };
     }>;
     updateProfile(userId: string, updateProfileDto: UpdateProfileDto): Promise<{
-        id: string;
         phone: string;
         nickname: string;
+        id: string;
         avatarUrl: string;
         role: import(".prisma/client").$Enums.UserRole;
         createdAt: Date;

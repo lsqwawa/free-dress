@@ -13,11 +13,25 @@ datasource db {
 // 用户模型
 model User {
   id            String         @id @default(uuid())
-  phone         String         @unique
-  password      String
+
+  // 手机号体系（可空：纯微信注册的账号没有手机号）
+  phone         String?        @unique
+  password      String?
+
+  // 微信体系（一期主键识别用 OpenID 兜底，UnionId 二期接入）
+  wechatUnionId   String?      @unique
+  wechatOpenIdApp String?      @unique
+  wechatOpenIdMp  String?      @unique
+  wechatNickname  String?
+  wechatAvatarUrl String?
+
   nickname      String         @default("用户")
   avatarUrl     String?
   role          UserRole       @default(USER)
+
+  // 注册来源（埋点 / 风控）
+  registerSource RegisterSource @default(PHONE)
+
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   
@@ -34,6 +48,27 @@ model User {
 enum UserRole {
   USER  // 普通用户
   VIP   // VIP用户
+}
+
+// 注册来源枚举
+enum RegisterSource {
+  PHONE       // 手机号注册
+  WECHAT_APP  // App 端微信登录建号
+  WECHAT_MP   // 小程序端微信登录建号
+}
+
+// 微信绑定/解绑审计日志
+model WechatBindLog {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String   // BIND_WECHAT_MP | BIND_WECHAT_APP | UNBIND_WECHAT | BIND_PHONE | AUTO_BIND_WECHAT_MP
+  platform  String   // APP | MP
+  detail    String?  // JSON 字符串：记录 openid/unionid 等
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("wechat_bind_logs")
 }
 
 // 会员订阅模型

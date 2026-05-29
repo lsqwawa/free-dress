@@ -1,0 +1,49 @@
+<!-- 账号与安全 -->
+<view class="security-page grain-bg">
+  <view class="header">
+    <text class="text-kicker">ACCOUNT · SECURITY</text>
+    <text class="title text-hero">账号与安全</text>
+  </view>
+
+  <view class="section">
+    <view class="item" bindtap="goBindPhone">
+      <view class="item-left">
+        <text class="item-label">手机号</text>
+      </view>
+      <view class="item-right">
+        <text class="item-value" wx:if="{{user && user.hasPhone}}">{{user.phone}}</text>
+        <text class="item-action" wx:else>去绑定</text>
+        <text class="item-arrow" wx:if="{{!user || !user.hasPhone}}">›</text>
+      </view>
+    </view>
+
+    <view class="item">
+      <view class="item-left">
+        <text class="item-label">微信账号</text>
+      </view>
+      <view class="item-right">
+        <block wx:if="{{user && user.hasWechatMp}}">
+          <text class="item-value">已绑定</text>
+          <text class="item-link" bindtap="handleUnbindWechat">解绑</text>
+        </block>
+        <block wx:else>
+          <text class="item-action" bindtap="handleBindWechat">去绑定</text>
+        </block>
+      </view>
+    </view>
+
+    <view class="item" bindtap="goChangePassword">
+      <view class="item-left">
+        <text class="item-label">登录密码</text>
+      </view>
+      <view class="item-right">
+        <text class="item-action">{{user && user.hasPhone ? '修改' : '需先绑定手机号'}}</text>
+        <text class="item-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="tips">
+    <text class="text-caption tips-text">提示：解绑微信前需绑定手机号，避免账号无法登录。</text>
+  </view>
+</view>

@@ -7,8 +7,12 @@ const { get, post, put, del, upload } = require('./request');
 const authApi = {
   // 图片验证码（注册/找回密码使用）
   getCaptcha: () => get('/auth/captcha'),
-  // 登录
-  login: (phone, password) => post('/auth/login', { phone, password }),
+  // 登录（可选传 wechatCode 触发自动绑定微信）
+  login: (phone, password, wechatCode) => post('/auth/login', {
+    phone,
+    password,
+    ...(wechatCode ? { wechatCode } : {}),
+  }),
   // 注册（带图片验证码）
   register: (data) => post('/auth/register', data),
   // 刷新 Token
@@ -19,6 +23,13 @@ const authApi = {
   resetPassword: (data) => post('/auth/reset-password', data),
   // 修改密码（已登录态）
   changePassword: (data) => post('/auth/change-password', data),
+  // 小程序微信一键登录
+  wechatMpLogin: (data) => post('/auth/wechat/mp-login', data),
+  // 绑定手机号（已登录态）
+  bindPhone: (data) => post('/auth/bind/phone', data),
+  // 绑定/解绑微信
+  bindWechatMp: (data) => post('/auth/bind/wechat-mp', data),
+  unbindWechat: (platform) => post('/auth/unbind/wechat', { platform: platform || 'MP' }),
 };
 
 // === 用户 ===

@@ -222,6 +222,33 @@
   color: var(--ink);
 }
 
+/* 微信一键登录按钮 */
+.btn-wechat {
+  margin-top: var(--sp-3);
+  height: 88rpx;
+  background-color: #07C160;
+  color: #fff;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 4rpx;
+}
+
+.btn-wechat::after {
+  border: none;
+}
+
+.btn-wechat:active {
+  opacity: 0.85;
+}
+
+.btn-wechat-text {
+  font-size: var(--fs-md);
+  color: #fff;
+  font-weight: 500;
+}
+
 /* 底部 */
 .footer {
   margin-top: var(--sp-6);
