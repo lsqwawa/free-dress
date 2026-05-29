@@ -77,3 +77,22 @@
 .picker-check { position: absolute; top: 8rpx; right: 8rpx; width: 40rpx; height: 40rpx; border-radius: 50%; background-color: var(--caramel); display: flex; align-items: center; justify-content: center; }
 .check-icon { font-size: 24rpx; color: var(--cream); }
 .picker-done { margin: var(--sp-4); }
+
+/* AI 推荐 */
+.rec-hint { display: block; margin-top: var(--sp-2); font-style: italic; color: var(--ink-soft); }
+.rec-btn { margin-top: var(--sp-3); }
+.btn-outline { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 88rpx; background-color: transparent; border: 2rpx solid var(--ink); }
+.btn-outline::after { border: none; }
+.btn-outline:active { background-color: var(--cream); }
+.btn-outline-text { font-size: var(--fs-sm); color: var(--ink); font-weight: 500; letter-spacing: 2rpx; }
+.rec-list { margin-top: var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-3); }
+.rec-card { background-color: var(--cream); border: 1rpx solid var(--mist-gray); padding: var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-2); }
+.rec-card-header { display: flex; flex-direction: row; justify-content: space-between; align-items: center; }
+.rec-no { color: var(--ink-muted); font-size: var(--fs-xs); }
+.rec-score-badge { background-color: var(--caramel); padding: 2rpx var(--sp-2); border-radius: var(--radius-sm); }
+.rec-score-text { color: var(--cream); font-size: var(--fs-xs); }
+.rec-style { font-size: var(--fs-md); font-family: var(--font-serif); color: var(--ink); }
+.rec-reason { color: var(--ink-soft); display: block; }
+.rec-footer { display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: var(--sp-1); padding-top: var(--sp-2); border-top: 1rpx solid var(--mist-gray); }
+.rec-occasion { color: var(--clay); }
+.rec-adopt { color: var(--caramel); font-weight: 500; }

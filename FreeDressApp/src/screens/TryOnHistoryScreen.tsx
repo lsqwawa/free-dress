@@ -51,13 +51,13 @@ function TryOnHistoryScreen() {
 
   useEffect(() => {
     fetchResults();
-  }, []);
+  }, [fetchResults]);
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchResults();
     setRefreshing(false);
-  }, []);
+  }, [fetchResults]);
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);

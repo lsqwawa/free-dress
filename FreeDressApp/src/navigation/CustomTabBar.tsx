@@ -141,12 +141,12 @@ function TabItem({ cfg, focused, onPress }: TabItemProps) {
   }));
 
   const handlePress = () => {
-    if (cfg.center) {
-      rotate.value = withTiming(rotate.value + 180, {
-        duration: DURATION.slow,
-        easing: EASE.editorial,
-      });
-    }
+    // if (cfg.center) {
+    //   rotate.value = withTiming(rotate.value + 180, {
+    //     duration: DURATION.slow,
+    //     easing: EASE.editorial,
+    //   });
+    // }
     onPress();
   };
 

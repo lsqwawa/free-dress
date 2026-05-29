@@ -36,6 +36,11 @@ import { slowTransition } from '../theme/motion';
 import { MainTabParamList } from '../types';
 import { COLORS, SPACING, HAIRLINE, RADIUS, FONT_SIZES, FONTS } from '../constants';
 import { getCategoryStats } from '../api/clothes';
+import {
+  getEditorialDate,
+  getEditorialIssueText,
+  getDayNumber,
+} from '../utils/date';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<MainTabParamList, 'Home'>;
 
@@ -101,6 +106,9 @@ function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const insets = useSafeAreaInsets();
   const [pieceCount, setPieceCount] = useState(0);
+  const editorialIssue = getEditorialIssueText();
+  const editorialDate = getEditorialDate();
+  const issueNum = String(getDayNumber());
 
   const heroOpacity = useSharedValue(0);
   const heroY = useSharedValue(20);
@@ -179,9 +187,9 @@ function HomeScreen() {
           <View style={styles.coverTopRow}>
             <View style={styles.coverTopLeft}>
               <View style={styles.dotLine} />
-              <KickerText>EDITORIAL · ISSUE 24</KickerText>
+              <KickerText>{editorialIssue}</KickerText>
             </View>
-            <MonoText>26 · MAY · FRI</MonoText>
+            <MonoText>{editorialDate}</MonoText>
           </View>
 
           <View style={styles.coverTitleBlock}>
@@ -191,7 +199,7 @@ function HomeScreen() {
               <HeroText style={styles.coverTitle}>穿什么</HeroText>
               <View style={styles.coverIssueWrap}>
                 <MonoText style={styles.coverIssue}>№</MonoText>
-                <SerifTitle style={styles.coverIssueNum}>24</SerifTitle>
+                <SerifTitle style={styles.coverIssueNum}>{issueNum}</SerifTitle>
               </View>
             </View>
           </View>

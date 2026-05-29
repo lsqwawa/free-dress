@@ -39,6 +39,7 @@ import { RootStackParamList } from '../types';
 import { useAuthStore } from '../store/authStore';
 import { register, getCaptcha } from '../api/auth';
 import { COLORS, SPACING, HAIRLINE, FONT_SIZES } from '../constants';
+import { getLoginVolText } from '../utils/date';
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -56,6 +57,7 @@ function RegisterScreen() {
   const [captchaLoading, setCaptchaLoading] = useState(false);
   const [nickname, setNickname] = useState('');
   const [loading, setLoading] = useState(false);
+  const volText = getLoginVolText();
 
   const titleOpacity = useSharedValue(0);
   const titleY = useSharedValue(16);
@@ -142,7 +144,7 @@ function RegisterScreen() {
               <Feather name="arrow-left" size={18} color={COLORS.ink} />
               <KickerText style={styles.backLabel}>BACK</KickerText>
             </Pressable>
-            <MonoText>VOL.01 — 26'SS</MonoText>
+            <MonoText>{volText}</MonoText>
           </View>
 
           {/* Hero */}

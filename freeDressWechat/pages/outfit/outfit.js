@@ -13,6 +13,9 @@ Page({
     generating: false,
     pickerVisible: false,
     volText: '',
+    // AI 推荐
+    recommendations: [],
+    loadingRec: false,
   },
 
   onShow() {
@@ -103,4 +106,46 @@ Page({
   },
 
   goTryon() { wx.switchTab({ url: '/pages/tryon/tryon' }); },
+
+  // === AI 推荐 ===
+  async handleGetRecommendations() {
+    this.setData({ loadingRec: true });
+    try {
+      const res = await outfitsApi.getRecommendations({ count: 3 });
+      const list = (res.data || []).map((r, i) => ({
+        ...r,
+        index: String(i + 1).padStart(2, '0'),
+      }));
+      this.setData({ recommendations: list });
+    } catch (err) {
+      const msg = err.message || '';
+      if (msg.includes('次数已用完')) {
+        wx.showToast({ title: '今日AI推荐次数已用完', icon: 'none' });
+      } else {
+        wx.showToast({ title: msg || '推荐失败', icon: 'none' });
+      }
+    } finally {
+      this.setData({ loadingRec: false });
+    }
+  },
+
+  handleAdoptRecommendation(e) {
+    const idx = e.currentTarget.dataset.index;
+    const rec = this.data.recommendations[idx];
+    if (!rec) return;
+
+    const clothIdSet = new Set(rec.clothIds || []);
+    const allClothes = this.data.allClothes.map((c) => ({
+      ...c,
+      selected: clothIdSet.has(c.id),
+    }));
+    const selected = allClothes.filter((c) => c.selected);
+    this.setData({
+      allClothes,
+      selectedClothes: selected,
+      selectedCount: String(selected.length).padStart(2, '0'),
+      intents: rec.style ? [rec.style] : [],
+    });
+    wx.showToast({ title: '已采纳，可直接生成', icon: 'success' });
+  },
 });

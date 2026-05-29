@@ -1,0 +1,92 @@
+<!-- 编辑衣物 · EDITING -->
+<view class="edit-cloth-page">
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-arrow">←</text>
+      <text class="text-kicker back-label">BACK</text>
+    </view>
+    <text class="text-mono">EDITING</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">
+    <text class="text-caption">加载中…</text>
+  </view>
+
+  <scroll-view wx:else scroll-y class="scroll-wrap">
+    <view class="title-block">
+      <text class="text-kicker title-kicker">EDITING</text>
+      <text class="text-serif-title title-main">编辑衣物</text>
+      <view class="title-divider"></view>
+    </view>
+
+    <!-- 图片 -->
+    <view class="section">
+      <text class="text-kicker section-kicker">PHOTO</text>
+      <block wx:if="{{imageUri || imageUrl}}">
+        <view class="preview-wrap">
+          <image class="preview" src="{{imageUri || imageUrl}}" mode="aspectFill" />
+          <view class="preview-retake" bindtap="removePhoto">
+            <text class="preview-retake-icon">↻</text>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="pick-row">
+        <view class="pick-btn" bindtap="choosePhoto">
+          <text class="pick-icon">◑</text>
+          <text class="text-caption">点击选择图片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 分类 -->
+    <view class="section">
+      <text class="text-kicker section-kicker">CATEGORY *</text>
+      <view class="tag-row">
+        <view class="tag {{category === item.value ? 'tag-active' : ''}}" wx:for="{{categories}}" wx:key="value" bindtap="selectCategory" data-value="{{item.value}}">
+          <text class="tag-text">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 颜色 -->
+    <view class="section">
+      <text class="text-kicker section-kicker">COLOR · 颜色</text>
+      <input class="input-field" placeholder="如：黑色、白色" placeholder-class="input-placeholder" value="{{color}}" bindinput="onInput" data-field="color" />
+      <view class="input-line"></view>
+    </view>
+
+    <!-- 风格 -->
+    <view class="section">
+      <text class="text-kicker section-kicker">STYLE · 风格</text>
+      <view class="tag-row">
+        <view class="tag tag-sm {{style === item ? 'tag-active' : ''}}" wx:for="{{styles}}" wx:key="*this" bindtap="selectStyle" data-value="{{item}}">
+          <text class="tag-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 季节 -->
+    <view class="section">
+      <text class="text-kicker section-kicker">SEASON · 季节</text>
+      <view class="tag-row">
+        <view class="tag {{selectedSeasons.includes(item) ? 'tag-active' : ''}}" wx:for="{{seasons}}" wx:key="*this" bindtap="toggleSeason" data-value="{{item}}">
+          <text class="tag-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 标签 -->
+    <view class="section">
+      <text class="text-kicker section-kicker">TAGS · 标签</text>
+      <input class="input-field" placeholder="用逗号分隔，如：T恤, 纯棉" placeholder-class="input-placeholder" value="{{tags}}" bindinput="onInput" data-field="tags" />
+      <view class="input-line"></view>
+    </view>
+
+    <view class="submit-wrap">
+      <button class="btn-primary" bindtap="handleSubmit" loading="{{submitting}}">
+        <text class="btn-text">保存修改</text>
+        <text class="btn-arrow">✓</text>
+      </button>
+    </view>
+  </scroll-view>
+</view>

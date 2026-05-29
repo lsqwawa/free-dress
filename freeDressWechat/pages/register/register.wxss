@@ -18,6 +18,15 @@
 .code-btn { padding: var(--sp-2) var(--sp-4); border: 1rpx solid var(--caramel); }
 .code-btn--disabled { opacity: 0.5; }
 .code-btn-text { font-size: var(--fs-sm); color: var(--caramel); white-space: nowrap; }
+
+/* 图片验证码 */
+.captcha-row { display: flex; flex-direction: row; align-items: flex-end; gap: var(--sp-4); }
+.captcha-input-wrap { flex: 1; }
+.captcha-image-wrap { display: flex; flex-direction: column; align-items: center; gap: 4rpx; }
+.captcha-image { width: 240rpx; height: 88rpx; background-color: var(--cream); border: 1rpx solid var(--mist-gray); border-radius: 8rpx; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.captcha-placeholder { width: 240rpx; height: 88rpx; background-color: var(--cream); border: 1rpx solid var(--mist-gray); border-radius: 8rpx; display: flex; align-items: center; justify-content: center; }
+.captcha-placeholder-text { font-size: var(--fs-xs); color: var(--clay); }
+.captcha-tip { font-size: 18rpx; color: var(--clay); margin-top: 4rpx; }
 .submit-wrap { margin-top: var(--sp-4); }
 .btn-primary { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 104rpx; background-color: var(--ink); border: none; gap: var(--sp-3); }
 .btn-primary::after { border: none; }

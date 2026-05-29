@@ -29,10 +29,18 @@ import {
   MonoText,
   BodyText,
 } from '../components';
-import { COLORS, SPACING, HAIRLINE, FONT_SIZES, EASE, DURATION } from '../constants';
+import {
+  COLORS,
+  SPACING,
+  HAIRLINE,
+  FONT_SIZES,
+  EASE,
+  DURATION,
+} from '../constants';
 import { uploadImage } from '../api/upload';
 import { useOutfitStore } from '../store/outfitStore';
 import { useTryOnStore } from '../store/tryOnStore';
+import { getVolText, getIssueNo } from '../utils/date';
 
 const STEPS = [
   { no: '01', kicker: 'UPLOAD', label: '上传照片' },
@@ -42,12 +50,15 @@ const STEPS = [
 
 function TryOnScreen() {
   const { outfits, fetchOutfits } = useOutfitStore();
-  const { currentResult, isGenerating, progress, generateTryon } = useTryOnStore();
+  const { currentResult, isGenerating, progress, generateTryon } =
+    useTryOnStore();
 
   const [personUri, setPersonUri] = useState<string | null>(null);
   const [personUrl, setPersonUrl] = useState<string | null>(null);
   const [selectedOutfitId, setSelectedOutfitId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const volText = getVolText();
+  const issueNo = getIssueNo();
 
   const activeStep = personUrl ? (selectedOutfitId ? 2 : 1) : 0;
 
@@ -55,11 +66,11 @@ function TryOnScreen() {
     if (outfits.length === 0) {
       fetchOutfits();
     }
-  }, []);
+  }, [outfits.length, fetchOutfits]);
 
   const pickImage = (fromCamera: boolean) => {
     const action = fromCamera ? launchCamera : launchImageLibrary;
-    action({ mediaType: 'photo', quality: 0.8 }, async (res) => {
+    action({ mediaType: 'photo', quality: 0.8 }, async res => {
       if (res.didCancel) return;
       if (res.errorCode) {
         Alert.alert('错误', res.errorMessage || '无法获取图片');
@@ -98,11 +109,7 @@ function TryOnScreen() {
 
   return (
     <View style={styles.root}>
-      <ScreenHeader
-        kicker="TRY-ON STUDIO"
-        title="AI 试穿"
-        issue="STUDIO №07"
-      />
+      <ScreenHeader kicker="TRY-ON STUDIO" title="AI 试穿" issue={issueNo} />
 
       <ScrollView
         style={styles.scroll}
@@ -132,11 +139,11 @@ function TryOnScreen() {
                   </SerifTitle>
                 </View>
                 <KickerText
+                  numberOfLines={1}
                   style={[
                     styles.stepKicker,
                     {
-                      color:
-                        idx === activeStep ? COLORS.caramel : COLORS.inkMuted,
+                      color: idx === activeStep ? COLORS.caramel : COLORS.inkMuted,
                     },
                   ]}
                 >
@@ -144,9 +151,7 @@ function TryOnScreen() {
                 </KickerText>
                 <CaptionText style={styles.stepLabel}>{step.label}</CaptionText>
               </View>
-              {idx < STEPS.length - 1 ? (
-                <View style={styles.stepLine} />
-              ) : null}
+              {idx < STEPS.length - 1 ? <View style={styles.stepLine} /> : null}
             </React.Fragment>
           ))}
         </View>
@@ -219,7 +224,7 @@ function TryOnScreen() {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.draftsRow}
             >
-              {outfits.map((outfit) => {
+              {outfits.map(outfit => {
                 const selected = outfit.id === selectedOutfitId;
                 const firstCloth = outfit.outfitClothes?.[0]?.cloth;
                 return (
@@ -275,20 +280,23 @@ function TryOnScreen() {
 
         {/* 试穿结果 */}
         <View style={styles.section}>
-          <Section
-            kicker="OUTPUT"
-            title="试穿效果"
-            issue="VOL.24 / TRY-ON"
-          />
+          <Section kicker="OUTPUT" title="试穿效果" issue={`${volText} / TRY-ON`} />
 
           {/* 进度条（生成中显示） */}
           {isGenerating && (
             <View style={styles.progressWrap}>
               <View style={styles.progressBar}>
-                <View style={[styles.progressFill, { width: `${progress}%` }]} />
+                <View
+                  style={[styles.progressFill, { width: `${progress}%` }]}
+                />
               </View>
               <MonoText style={styles.progressText}>
-                {progress < 30 ? '排队中...' : progress < 70 ? 'AI 正在合成...' : '即将完成...'} {progress}%
+                {progress < 30
+                  ? '排队中...'
+                  : progress < 70
+                  ? 'AI 正在合成...'
+                  : '即将完成...'}{' '}
+                {progress}%
               </MonoText>
             </View>
           )}
@@ -303,10 +311,12 @@ function TryOnScreen() {
             </View>
           )}
 
-          {currentResult && currentResult.status !== 'FAILED' && currentResult.resultImageUrl ? (
+          {currentResult &&
+          currentResult.status !== 'FAILED' &&
+          currentResult.resultImageUrl ? (
             <View style={styles.resultFrame}>
               <View style={styles.resultStampRow}>
-                <MonoText style={{ color: COLORS.cream }}>VOL.24</MonoText>
+                <MonoText style={{ color: COLORS.cream }}>{volText}</MonoText>
                 <MonoText style={{ color: COLORS.cream }}>TRY-ON</MonoText>
               </View>
               <Image
@@ -324,8 +334,8 @@ function TryOnScreen() {
           ) : (
             <View style={styles.resultFrame}>
               <View style={styles.resultStampRow}>
-                <MonoText style={{ color: COLORS.cream }}>VOL.24</MonoText>
-                <MonoText style={{ color: COLORS.cream }}>TRY-ON №07</MonoText>
+                <MonoText style={{ color: COLORS.cream }}>{volText}</MonoText>
+                <MonoText style={{ color: COLORS.cream }}>TRY-ON {issueNo}</MonoText>
               </View>
               <View style={styles.resultCenter}>
                 <Feather name="user-check" size={40} color={COLORS.cream} />
@@ -352,7 +362,10 @@ function StitchingDots() {
     t.value = withRepeat(
       withSequence(
         withTiming(0, { duration: 0 }),
-        withTiming(1, { duration: DURATION.slow * 1.6, easing: EASE.editorial }),
+        withTiming(1, {
+          duration: DURATION.slow * 1.6,
+          easing: EASE.editorial,
+        }),
       ),
       -1,
       false,
@@ -371,9 +384,15 @@ function StitchingDots() {
 
   return (
     <View style={styles.dotsWrap}>
-      <Animated.View style={[styles.dot, { backgroundColor: COLORS.sand }, dot1]} />
-      <Animated.View style={[styles.dot, { backgroundColor: COLORS.caramel }, dot2]} />
-      <Animated.View style={[styles.dot, { backgroundColor: COLORS.cream }, dot3]} />
+      <Animated.View
+        style={[styles.dot, { backgroundColor: COLORS.sand }, dot1]}
+      />
+      <Animated.View
+        style={[styles.dot, { backgroundColor: COLORS.caramel }, dot2]}
+      />
+      <Animated.View
+        style={[styles.dot, { backgroundColor: COLORS.cream }, dot3]}
+      />
     </View>
   );
 }
@@ -438,10 +457,30 @@ const styles = StyleSheet.create({
     height: FRAME_CORNER,
     borderColor: COLORS.ink,
   },
-  cornerTL: { top: SPACING[3], left: SPACING[3], borderTopWidth: 1.5, borderLeftWidth: 1.5 },
-  cornerTR: { top: SPACING[3], right: SPACING[3], borderTopWidth: 1.5, borderRightWidth: 1.5 },
-  cornerBL: { bottom: SPACING[3], left: SPACING[3], borderBottomWidth: 1.5, borderLeftWidth: 1.5 },
-  cornerBR: { bottom: SPACING[3], right: SPACING[3], borderBottomWidth: 1.5, borderRightWidth: 1.5 },
+  cornerTL: {
+    top: SPACING[3],
+    left: SPACING[3],
+    borderTopWidth: 1.5,
+    borderLeftWidth: 1.5,
+  },
+  cornerTR: {
+    top: SPACING[3],
+    right: SPACING[3],
+    borderTopWidth: 1.5,
+    borderRightWidth: 1.5,
+  },
+  cornerBL: {
+    bottom: SPACING[3],
+    left: SPACING[3],
+    borderBottomWidth: 1.5,
+    borderLeftWidth: 1.5,
+  },
+  cornerBR: {
+    bottom: SPACING[3],
+    right: SPACING[3],
+    borderBottomWidth: 1.5,
+    borderRightWidth: 1.5,
+  },
   uploadIconBlock: {
     width: 64,
     height: 64,

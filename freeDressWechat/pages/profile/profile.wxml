@@ -49,6 +49,29 @@
       </view>
     </view>
 
+    <!-- AI 配额 -->
+    <view wx:if="{{aiUsage}}" class="ai-block">
+      <section-header kicker="AI CREDITS" title="今日额度" issue="DAILY" />
+      <view class="ai-card">
+        <view class="ai-row">
+          <view class="ai-item">
+            <text class="text-kicker ai-label">AI 试穿</text>
+            <view class="ai-bar-wrap">
+              <view class="ai-bar" style="width: {{aiTryonPercent}}%;"></view>
+            </view>
+            <text class="text-mono ai-count">{{aiUsage.tryon.used}}/{{aiUsage.tryon.limit}}</text>
+          </view>
+          <view class="ai-item">
+            <text class="text-kicker ai-label">AI 推荐</text>
+            <view class="ai-bar-wrap">
+              <view class="ai-bar" style="width: {{aiRecPercent}}%;"></view>
+            </view>
+            <text class="text-mono ai-count">{{aiUsage.recommend.used}}/{{aiUsage.recommend.limit}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <!-- 菜单 -->
     <view class="menu-block">
       <section-header kicker="DIRECTORY" title="目录" issue="06 PAGES" />

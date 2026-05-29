@@ -26,17 +26,6 @@
       </view>
 
       <view class="input-group">
-        <text class="input-label text-caption">验证码</text>
-        <view class="input-row">
-          <input class="input-field flex-1" type="number" maxlength="6" placeholder="请输入验证码" placeholder-class="input-placeholder" value="{{code}}" bindinput="onInput" data-field="code" />
-          <view class="code-btn {{codeSending ? 'code-btn--disabled' : ''}}" bindtap="sendCode">
-            <text class="code-btn-text">{{codeText}}</text>
-          </view>
-        </view>
-        <view class="input-line"></view>
-      </view>
-
-      <view class="input-group">
         <text class="input-label text-caption">密码</text>
         <input class="input-field" password="{{true}}" maxlength="20" placeholder="请设置密码（6-20位）" placeholder-class="input-placeholder" value="{{password}}" bindinput="onInput" data-field="password" />
         <view class="input-line"></view>
@@ -52,6 +41,26 @@
         <text class="input-label text-caption">昵称</text>
         <input class="input-field" maxlength="20" placeholder="你的笔名（选填）" placeholder-class="input-placeholder" value="{{nickname}}" bindinput="onInput" data-field="nickname" />
         <view class="input-line"></view>
+      </view>
+
+      <!-- 图片验证码 -->
+      <view class="input-group">
+        <text class="input-label text-caption">VERIFICATION · 验证码</text>
+        <view class="captcha-row">
+          <view class="captcha-input-wrap flex-1">
+            <input class="input-field" maxlength="4" placeholder="请输入图中字符" placeholder-class="input-placeholder" value="{{captchaAnswer}}" bindinput="onInput" data-field="captchaAnswer" />
+            <view class="input-line"></view>
+          </view>
+          <view class="captcha-image-wrap" bindtap="refreshCaptcha">
+            <view class="captcha-placeholder" wx:if="{{captchaLoading || !captchaSvg}}">
+              <text class="captcha-placeholder-text">{{captchaLoading ? '加载中' : '点击加载'}}</text>
+            </view>
+            <view class="captcha-image" wx:else>
+              <rich-text nodes="{{captchaSvg}}"></rich-text>
+            </view>
+            <text class="captcha-tip text-caption">点击刷新</text>
+          </view>
+        </view>
       </view>
     </view>
 

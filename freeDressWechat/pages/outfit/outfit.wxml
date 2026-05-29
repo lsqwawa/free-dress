@@ -100,6 +100,29 @@
       </view>
     </view>
 
+    <!-- AI 推荐 -->
+    <view class="section">
+      <section-header kicker="AI STYLIST" title="智能推荐" issue="POWERED BY AI" />
+      <text class="text-caption rec-hint">基于你的衣橱，AI 为你拟定搭配方案</text>
+      <button class="btn-outline rec-btn" bindtap="handleGetRecommendations" loading="{{loadingRec}}">
+        <text class="btn-outline-text">{{loadingRec ? '推荐生成中...' : '获取 AI 推荐'}}</text>
+      </button>
+      <view wx:if="{{recommendations.length > 0}}" class="rec-list">
+        <view class="rec-card" wx:for="{{recommendations}}" wx:key="index" bindtap="handleAdoptRecommendation" data-index="{{index}}">
+          <view class="rec-card-header">
+            <text class="text-mono rec-no">№{{item.index}}</text>
+            <view class="rec-score-badge"><text class="text-mono rec-score-text">{{item.score}}分</text></view>
+          </view>
+          <text class="rec-style">{{item.style}}</text>
+          <text class="text-caption rec-reason">{{item.reason}}</text>
+          <view class="rec-footer">
+            <text class="text-caption rec-occasion">{{item.occasion}}</text>
+            <text class="text-caption rec-adopt">点击采纳 →</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <view style="height: 200rpx;"></view>
   </scroll-view>
 

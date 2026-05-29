@@ -57,6 +57,6 @@ Page({
   },
 
   goToForgotPassword() {
-    wx.showToast({ title: '功能即将开放', icon: 'none' });
+    wx.navigateTo({ url: '/pages/forgotPassword/forgotPassword' });
   }
 });

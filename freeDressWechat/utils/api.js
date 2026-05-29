@@ -1,21 +1,30 @@
 /**
- * API 接口集合
+ * API 接口集合 · 与 FreeDressApp 保持一致
  */
 const { get, post, put, del, upload } = require('./request');
 
 // === 认证 ===
 const authApi = {
+  // 图片验证码（注册/找回密码使用）
+  getCaptcha: () => get('/auth/captcha'),
+  // 登录
   login: (phone, password) => post('/auth/login', { phone, password }),
+  // 注册（带图片验证码）
   register: (data) => post('/auth/register', data),
+  // 刷新 Token
   refreshToken: (refreshToken) => post('/auth/refresh', { refreshToken }),
-  forgotPassword: (phone) => post('/auth/forgot-password', { phone }),
+  // 忘记密码：验证手机号 + 验证码 → 返回重置令牌
+  forgotPassword: (data) => post('/auth/forgot-password', data),
+  // 重置密码：使用重置令牌 + 新密码
   resetPassword: (data) => post('/auth/reset-password', data),
+  // 修改密码（已登录态）
+  changePassword: (data) => post('/auth/change-password', data),
 };
 
 // === 用户 ===
 const userApi = {
-  getProfile: () => get('/users/me'),
-  updateProfile: (data) => put('/users/me', data),
+  getProfile: () => get('/users/profile'),
+  updateProfile: (data) => put('/users/profile', data),
   getStats: () => get('/users/stats'),
 };
 
@@ -37,13 +46,32 @@ const outfitsApi = {
   remove: (id) => del(`/outfits/${id}`),
   toggleFavorite: (id) => post(`/outfits/${id}/favorite`),
   getFavorites: (params) => get('/outfits/favorites', params),
+  // AI 推荐搭配
+  getRecommendations: (params) => get('/outfits/recommendations', params),
 };
 
-// === AI试穿 ===
+// === AI 试穿 ===
 const tryOnApi = {
-  generate: (data) => post('/tryon/generate', data),
-  getHistory: (params) => get('/tryon/history', params),
+  // 创建试穿任务（路径与 App 对齐）
+  generate: (data) => post('/tryon', data),
+  // 历史记录
+  getHistory: (params) => get('/tryon', params),
+  // 单次试穿详情
   getById: (id) => get(`/tryon/${id}`),
+  // 试穿任务状态轮询
+  getStatus: (id) => get(`/tryon/${id}/status`),
+  // AI 配额查询（试穿/推荐）
+  getQuota: () => get('/tryon/quota'),
+};
+
+// === 会员 ===
+const membershipApi = {
+  // 当前会员信息（VIP 状态、有效期等）
+  getInfo: () => get('/membership'),
+  // 套餐列表
+  getPlans: () => get('/membership/plans'),
+  // 订阅
+  subscribe: (data) => post('/membership/subscribe', data),
 };
 
 // === 上传 ===
@@ -57,5 +85,6 @@ module.exports = {
   clothesApi,
   outfitsApi,
   tryOnApi,
+  membershipApi,
   uploadApi,
 };

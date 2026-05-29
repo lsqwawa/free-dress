@@ -56,7 +56,7 @@ function WardrobeScreen() {
   useEffect(() => {
     fetchClothes();
     fetchStats();
-  }, []);
+  }, [fetchClothes, fetchStats]);
 
   const filtered = useMemo(() => {
     let list = clothes;
@@ -82,12 +82,12 @@ function WardrobeScreen() {
     } else {
       fetchClothes(cat as ClothCategory);
     }
-  }, []);
+  }, [fetchClothes, setActiveCategory]);
 
   const handleRefresh = useCallback(() => {
     fetchClothes(activeCategory === 'ALL' ? undefined : (activeCategory as ClothCategory));
     fetchStats();
-  }, [activeCategory]);
+  }, [activeCategory, fetchClothes, fetchStats]);
 
   const handleDelete = useCallback((id: string) => {
     Alert.alert('删除衣物', '确定要删除这件衣物吗？', [
@@ -104,7 +104,7 @@ function WardrobeScreen() {
         },
       },
     ]);
-  }, []);
+  }, [removeCloth]);
 
   const total = clothes.length;
 

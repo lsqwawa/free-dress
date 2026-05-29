@@ -38,6 +38,7 @@ import { RootStackParamList } from '../types';
 import { useAuthStore } from '../store/authStore';
 import { login } from '../api/auth';
 import { COLORS, SPACING, HAIRLINE, FONT_SIZES } from '../constants';
+import { getLoginVolText, getIssueNo } from '../utils/date';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -49,6 +50,8 @@ function LoginScreen() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const volText = getLoginVolText();
+  const issueNo = getIssueNo();
 
   const titleOpacity = useSharedValue(0);
   const titleY = useSharedValue(16);
@@ -113,7 +116,7 @@ function LoginScreen() {
               <View style={styles.dotLine} />
               <KickerText>FREEDRESS · ATELIER</KickerText>
             </View>
-            <MonoText>VOL.01 — 26'SS</MonoText>
+            <MonoText>{volText}</MonoText>
           </View>
 
           {/* Hero 区 */}
@@ -123,7 +126,7 @@ function LoginScreen() {
               <HeroText style={styles.heroChinese}>搭</HeroText>
               <View style={styles.heroAside}>
                 <CaptionText style={styles.heroEnglish}>FREEDRESS</CaptionText>
-                <MonoText style={styles.heroIssue}>№ 24</MonoText>
+                <MonoText style={styles.heroIssue}>{issueNo}</MonoText>
               </View>
             </View>
             <View style={styles.heroDivider} />

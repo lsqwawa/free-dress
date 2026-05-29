@@ -1,4 +1,4 @@
-const { userApi } = require('../../utils/api');
+const { userApi, tryOnApi } = require('../../utils/api');
 const { getVolText, getCurrentYear } = require('../../utils/date');
 const app = getApp();
 
@@ -9,6 +9,9 @@ Page({
     refreshing: false,
     volText: '',
     estYear: '',
+    aiUsage: null,
+    aiTryonPercent: 0,
+    aiRecPercent: 0,
     stats: [
       { no: '01', kicker: 'PIECES', value: '00' },
       { no: '02', kicker: 'OUTFITS', value: '00' },
@@ -19,8 +22,8 @@ Page({
       { no: '01', title: '收藏柜', icon: '♡', route: '/pages/favorites/favorites' },
       { no: '02', title: '搭配历史', icon: '⏱', route: '/pages/outfitHistory/outfitHistory' },
       { no: '03', title: '试穿记录', icon: '◑', route: '/pages/tryOnHistory/tryOnHistory' },
-      { no: '04', title: '会员中心', icon: '✦', route: '' },
-      { no: '05', title: '设置', icon: '⚙', route: '' },
+      { no: '04', title: '会员中心', icon: '✦', route: '/pages/membership/membership' },
+      { no: '05', title: '设置', icon: '⚙', route: '/pages/settings/settings' },
       { no: '06', title: '帮助与反馈', icon: '?', route: '' },
     ],
   },
@@ -53,6 +56,23 @@ Page({
         ]
       });
     } catch (e) { console.error('获取统计失败', e); }
+
+    // AI 配额（失败不影响主流程）
+    try {
+      const quotaRes = await tryOnApi.getQuota();
+      const aiUsage = quotaRes.data || null;
+      if (aiUsage) {
+        const tryonLimit = (aiUsage.tryon && aiUsage.tryon.limit) || 1;
+        const recLimit = (aiUsage.recommend && aiUsage.recommend.limit) || 1;
+        const tryonUsed = (aiUsage.tryon && aiUsage.tryon.used) || 0;
+        const recUsed = (aiUsage.recommend && aiUsage.recommend.used) || 0;
+        this.setData({
+          aiUsage,
+          aiTryonPercent: Math.min(100, Math.round((tryonUsed / tryonLimit) * 100)),
+          aiRecPercent: Math.min(100, Math.round((recUsed / recLimit) * 100)),
+        });
+      }
+    } catch (e) { /* 静默 */ }
   },
 
   async onRefresh() {
@@ -71,7 +91,7 @@ Page({
   },
 
   goEditProfile() {
-    wx.showToast({ title: '功能即将开放', icon: 'none' });
+    wx.navigateTo({ url: '/pages/editProfile/editProfile' });
   },
 
   handleLogout() {

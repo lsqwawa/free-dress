@@ -1,0 +1,56 @@
+<!-- 编辑资料页 · EDIT PROFILE -->
+<view class="edit-page">
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-arrow">←</text>
+      <text class="text-kicker back-label">BACK</text>
+    </view>
+    <text class="text-mono">EDIT PROFILE</text>
+  </view>
+
+  <scroll-view scroll-y class="scroll-wrap">
+    <view class="title-block">
+      <text class="text-kicker title-kicker">PROFILE</text>
+      <text class="text-serif-title title-main">编辑资料</text>
+      <view class="title-divider"></view>
+    </view>
+
+    <!-- 头像 -->
+    <view class="avatar-section">
+      <text class="text-kicker section-kicker">AVATAR</text>
+      <view class="avatar-row">
+        <view class="avatar-display">
+          <image wx:if="{{avatarUri || avatarUrl}}" class="avatar-img" src="{{avatarUri || avatarUrl}}" mode="aspectFill" />
+          <text wx:else class="avatar-fallback">{{(nickname || 'U')[0]}}</text>
+        </view>
+        <view class="avatar-actions">
+          <view class="avatar-btn" bindtap="chooseAvatar">
+            <text class="avatar-icon">◑</text>
+            <text class="text-caption">更换头像</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 昵称 -->
+    <view class="field">
+      <text class="text-kicker section-kicker">NICKNAME · 昵称</text>
+      <input class="input-field" maxlength="20" placeholder="输入新昵称" placeholder-class="input-placeholder" value="{{nickname}}" bindinput="onNicknameInput" />
+      <view class="input-line"></view>
+    </view>
+
+    <!-- 手机号（只读） -->
+    <view class="field">
+      <text class="text-kicker section-kicker">PHONE · 手机号</text>
+      <input class="input-field input-disabled" disabled value="{{phone}}" />
+      <view class="input-line"></view>
+    </view>
+
+    <view class="submit-wrap">
+      <button class="btn-primary" bindtap="handleSave" loading="{{saving}}">
+        <text class="btn-text">保存修改</text>
+        <text class="btn-arrow">✓</text>
+      </button>
+    </view>
+  </scroll-view>
+</view>

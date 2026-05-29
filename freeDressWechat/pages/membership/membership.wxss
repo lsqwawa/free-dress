@@ -1,0 +1,53 @@
+.membership-page { min-height: 100vh; background-color: var(--ecru); }
+.nav-bar { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: var(--sp-8) var(--sp-6) var(--sp-4); }
+.nav-back { display: flex; flex-direction: row; align-items: center; gap: var(--sp-2); }
+.nav-arrow { font-size: var(--fs-xl); color: var(--ink); }
+.back-label { color: var(--ink); }
+.scroll-wrap { height: calc(100vh - 120rpx); padding: 0 var(--sp-5) var(--sp-12); box-sizing: border-box; }
+
+.title-block { margin-bottom: var(--sp-5); padding: 0 var(--sp-1); }
+.title-kicker { display: block; margin-bottom: var(--sp-3); color: var(--caramel); }
+.title-main { display: block; font-size: 64rpx; line-height: 1.15; }
+.title-divider { height: 1rpx; background-color: var(--mist-gray); margin-top: var(--sp-4); }
+
+/* 当前状态 */
+.status-card { background-color: var(--ink); padding: var(--sp-5); margin-top: var(--sp-3); border-radius: var(--radius-sm); }
+.status-top { display: flex; flex-direction: row; justify-content: space-between; align-items: center; }
+.status-kicker { color: var(--sand); }
+.badge { padding: 4rpx var(--sp-3); border-radius: var(--radius-sm); }
+.badge-vip { background-color: var(--caramel); }
+.badge-free { background-color: var(--clay); }
+.badge-text { color: var(--cream); font-size: var(--fs-xs); }
+.status-info { margin-top: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2); }
+.status-title { color: var(--cream); font-size: var(--fs-xl); }
+.status-expiry { color: var(--sand); }
+
+/* 权益 */
+.benefits-section { margin-top: var(--sp-6); padding: 0 var(--sp-1); }
+.section-kicker { display: block; margin-bottom: var(--sp-1); color: var(--caramel); }
+.section-title { font-size: var(--fs-lg); display: block; margin-bottom: var(--sp-3); }
+.benefits-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.benefit-item { display: flex; flex-direction: row; align-items: center; gap: var(--sp-3); }
+.benefit-icon { font-size: var(--fs-md); color: var(--clay); width: 32rpx; text-align: center; }
+.benefit-icon-active { color: var(--caramel); }
+.benefit-text { font-size: var(--fs-base); flex: 1; }
+
+/* 套餐 */
+.plans-section { margin-top: var(--sp-6); padding: 0 var(--sp-1); }
+.plans-row { display: flex; flex-direction: row; gap: var(--sp-3); margin-top: var(--sp-3); }
+.plan-card { flex: 1; background-color: var(--cream); border: 1rpx solid var(--mist-gray); padding: var(--sp-4); display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); position: relative; box-sizing: border-box; min-width: 0; }
+.plan-card-active { border-color: var(--caramel); border-width: 2rpx; }
+.plan-tag { position: absolute; top: 0; right: 0; background-color: var(--caramel); padding: 2rpx var(--sp-2); }
+.plan-tag-text { color: var(--cream); font-size: 18rpx; }
+.plan-name { font-size: var(--fs-md); }
+.plan-price-row { display: flex; flex-direction: row; align-items: baseline; gap: var(--sp-2); }
+.plan-price { font-size: var(--fs-xl); color: var(--caramel); }
+.plan-original { text-decoration: line-through; color: var(--clay); }
+.plan-duration { color: var(--ink-muted); }
+
+.subscribe-btn { margin-top: var(--sp-6); }
+.btn-primary { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 104rpx; background-color: var(--ink); border: none; gap: var(--sp-3); }
+.btn-primary::after { border: none; }
+.btn-primary:active { transform: scale(0.97); }
+.btn-text { font-size: var(--fs-md); color: var(--cream); font-weight: 500; letter-spacing: 2rpx; }
+.disclaimer { display: block; text-align: center; margin-top: var(--sp-3); color: var(--clay); }

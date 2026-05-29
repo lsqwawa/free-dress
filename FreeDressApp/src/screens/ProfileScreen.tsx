@@ -27,6 +27,7 @@ import { useAuthStore } from '../store/authStore';
 import { getUserStats } from '../api/users';
 import { getTryonQuota, AiUsageSummary } from '../api/tryon';
 import { COLORS, SPACING, HAIRLINE, FONT_SIZES } from '../constants';
+import { getVolText, getEstYearText } from '../utils/date';
 
 interface StatItem {
   no: string;
@@ -61,6 +62,8 @@ function ProfileScreen() {
   ]);
   const [refreshing, setRefreshing] = useState(false);
   const [aiUsage, setAiUsage] = useState<AiUsageSummary | null>(null);
+  const volText = getVolText();
+  const estYearText = getEstYearText();
 
   const fetchStats = useCallback(async () => {
     try {
@@ -80,18 +83,19 @@ function ProfileScreen() {
       setAiUsage(quotaRes.data);
     } catch (e) {
       // AI配额获取失败不影响主流程
+      console.error('获取AI配额失败:', e);
     }
   }, []);
 
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [fetchStats]);
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchStats();
     setRefreshing(false);
-  }, []);
+  }, [fetchStats]);
 
   const handleLogout = () => {
     Alert.alert('退订本期', '您确定要登出本刊吗？', [
@@ -141,8 +145,8 @@ function ProfileScreen() {
           <GrainOverlay opacity={0.06} color={COLORS.cream} density={100} />
 
           <View style={styles.userTopRow}>
-            <KickerText style={styles.userKicker}>EST. 2026</KickerText>
-            <MonoText style={styles.userIssue}>VOL. 24</MonoText>
+            <KickerText style={styles.userKicker}>{estYearText}</KickerText>
+            <MonoText style={styles.userIssue}>{volText}</MonoText>
           </View>
 
           <View style={styles.userBody}>
@@ -191,7 +195,7 @@ function ProfileScreen() {
                 <SerifTitle style={styles.statValue}>
                   {String(s.value).padStart(2, '0')}
                 </SerifTitle>
-                <KickerText style={styles.statKicker}>{s.kicker}</KickerText>
+                <KickerText numberOfLines={1} style={styles.statKicker}>{s.kicker}</KickerText>
               </View>
             ))}
           </View>
@@ -374,8 +378,8 @@ const styles = StyleSheet.create({
   },
   statCell: {
     flex: 1,
-    paddingVertical: SPACING[5],
-    paddingHorizontal: SPACING[3],
+    paddingVertical: SPACING[3],
+    paddingHorizontal: SPACING[1],
     alignItems: 'center',
     borderRightWidth: HAIRLINE,
     borderRightColor: COLORS.mistGray,

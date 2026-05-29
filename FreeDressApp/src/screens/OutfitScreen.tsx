@@ -24,13 +24,13 @@ import {
   CaptionText,
   QuoteText,
   MonoText,
-  IconButton,
 } from '../components';
 import { COLORS, SPACING, HAIRLINE, RADIUS, FONT_SIZES } from '../constants';
-import { Cloth } from '../types';
+// import { Cloth } from '../types';
 import { useWardrobeStore } from '../store/wardrobeStore';
 import { useOutfitStore } from '../store/outfitStore';
 import { getRecommendations, RecommendationResult } from '../api/outfits';
+import { getVolText, getIssueNo } from '../utils/date';
 
 
 const STYLE_INTENTS = [
@@ -48,12 +48,14 @@ function OutfitScreen() {
   const [generating, setGenerating] = useState(false);
   const [recommendations, setRecommendations] = useState<RecommendationResult[]>([]);
   const [loadingRec, setLoadingRec] = useState(false);
+  const volText = getVolText();
+  const issueNo = getIssueNo();
 
   useEffect(() => {
     if (clothes.length === 0) {
       fetchClothes();
     }
-  }, []);
+  }, [clothes.length, fetchClothes]);
 
   const toggleIntent = (intent: string) => {
     setIntents((prev) =>
@@ -95,7 +97,7 @@ function OutfitScreen() {
     } catch (e: any) {
       Alert.alert('操作失败', e.message);
     }
-  }, [currentOutfit]);
+  }, [currentOutfit, toggleFav]);
 
   const handleGetRecommendations = useCallback(async () => {
     setLoadingRec(true);
@@ -129,6 +131,7 @@ function OutfitScreen() {
       });
     } catch (e) {
       // 用户取消分享，静默处理
+      console.log('用户取消分享', e);
     }
   }, [currentOutfit]);
 
@@ -137,7 +140,7 @@ function OutfitScreen() {
       <ScreenHeader
         kicker="STYLE LAB"
         title="搭配实验室"
-        issue="DRAFT №07"
+        issue={issueNo}
       />
 
       <ScrollView
@@ -251,7 +254,7 @@ function OutfitScreen() {
           <Section
             kicker="OUTFIT RESULT"
             title="拟稿"
-            issue="VOL.24 · DRAFT"
+            issue={`${volText} · DRAFT`}
           />
 
           {currentOutfit ? (
@@ -273,7 +276,7 @@ function OutfitScreen() {
                   </View>
                 )}
                 <View style={styles.resultStampTop}>
-                  <MonoText style={{ color: COLORS.cream }}>VOL.24 / OUTFIT</MonoText>
+                  <MonoText style={{ color: COLORS.cream }}>{`${volText} / OUTFIT`}</MonoText>
                 </View>
               </View>
               <View style={styles.resultInfo}>
@@ -316,7 +319,7 @@ function OutfitScreen() {
               <View style={styles.resultImage}>
                 <View style={styles.resultStripe} />
                 <View style={styles.resultStampTop}>
-                  <MonoText style={{ color: COLORS.cream }}>VOL.24 / OUTFIT</MonoText>
+                  <MonoText style={{ color: COLORS.cream }}>{`${volText} / OUTFIT`}</MonoText>
                 </View>
                 <View style={styles.resultCenter}>
                   <Feather name="layers" size={36} color={COLORS.cream} />

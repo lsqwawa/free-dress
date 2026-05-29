@@ -1,0 +1,68 @@
+<!-- 会员中心 · MEMBERSHIP -->
+<view class="membership-page">
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="goBack">
+      <text class="nav-arrow">←</text>
+      <text class="text-kicker back-label">BACK</text>
+    </view>
+    <text class="text-mono">MEMBERSHIP</text>
+  </view>
+
+  <scroll-view scroll-y class="scroll-wrap">
+    <view class="title-block">
+      <text class="text-kicker title-kicker">MEMBERSHIP</text>
+      <text class="text-serif-title title-main">会员中心</text>
+      <view class="title-divider"></view>
+    </view>
+
+    <!-- 当前状态 -->
+    <view class="status-card">
+      <view class="status-top">
+        <text class="text-kicker status-kicker">CURRENT STATUS</text>
+        <view class="badge {{info.isVip ? 'badge-vip' : 'badge-free'}}">
+          <text class="text-mono badge-text">{{info.isVip ? 'VIP' : 'FREE'}}</text>
+        </view>
+      </view>
+      <view class="status-info">
+        <text class="text-serif-title status-title">{{planTitle}}</text>
+        <text class="text-caption status-expiry">{{daysLabel}}</text>
+      </view>
+    </view>
+
+    <!-- 权益 -->
+    <view class="benefits-section" wx:if="{{benefitsList.length > 0}}">
+      <text class="text-kicker section-kicker">BENEFITS</text>
+      <text class="text-serif-title section-title">当前权益</text>
+      <view class="benefits-list">
+        <view class="benefit-item" wx:for="{{benefitsList}}" wx:key="text">
+          <text class="benefit-icon {{item.active ? 'benefit-icon-active' : ''}}">{{item.active ? '✓' : '○'}}</text>
+          <text class="text-body benefit-text">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 套餐选择 -->
+    <view wx:if="{{!info.isVip && plans.length > 0}}" class="plans-section">
+      <text class="text-kicker section-kicker">PLANS</text>
+      <text class="text-serif-title section-title">选择套餐</text>
+      <view class="plans-row">
+        <view class="plan-card {{selectedPlan === item.id ? 'plan-card-active' : ''}}" wx:for="{{plans}}" wx:key="id" bindtap="onSelectPlan" data-id="{{item.id}}">
+          <view wx:if="{{item.tag}}" class="plan-tag">
+            <text class="text-mono plan-tag-text">{{item.tag}}</text>
+          </view>
+          <text class="text-serif-title plan-name">{{item.name}}</text>
+          <view class="plan-price-row">
+            <text class="text-serif-title plan-price">¥{{item.price}}</text>
+            <text class="text-caption plan-original">¥{{item.originalPrice}}</text>
+          </view>
+          <text class="text-caption plan-duration">{{item.duration}}</text>
+        </view>
+      </view>
+
+      <button class="btn-primary subscribe-btn" bindtap="handleSubscribe" loading="{{loading}}" disabled="{{!selectedPlan}}">
+        <text class="btn-text">立即开通</text>
+      </button>
+      <text class="text-caption disclaimer">注：当前为演示版，实际需对接微信支付</text>
+    </view>
+  </scroll-view>
+</view>
