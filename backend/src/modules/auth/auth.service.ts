@@ -9,21 +9,11 @@ import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 
 /**
- * 重置密码令牌存储
- */
-interface ResetTokenEntry {
-  userId: string;
-  createdAt: number;
-}
-
-/**
  * 认证服务
  * 处理用户登录、注册、验证码校验、密码重置等认证逻辑
  */
 @Injectable()
 export class AuthService {
-  // 重置密码令牌存储（生产环境应使用 Redis）
-  private readonly resetTokens = new Map<string, ResetTokenEntry>();
   // 重置令牌有效期 10 分钟
   private readonly RESET_TOKEN_TTL = 10 * 60 * 1000;
 
@@ -33,7 +23,7 @@ export class AuthService {
     private readonly captchaService: CaptchaService,
   ) {
     // 定期清理过期重置令牌
-    setInterval(() => this.cleanupResetTokens(), 60 * 1000);
+    setInterval(() => this.cleanupResetTokens(), 5 * 60 * 1000);
   }
 
   /**
@@ -193,11 +183,16 @@ export class AuthService {
       throw new NotFoundException('该手机号未注册');
     }
 
-    // 生成重置令牌
+    // 生成重置令牌并存入数据库
     const resetToken = uuid();
-    this.resetTokens.set(resetToken, {
-      userId: user.id,
-      createdAt: Date.now(),
+    const expiresAt = new Date(Date.now() + this.RESET_TOKEN_TTL);
+
+    await this.prisma.resetToken.create({
+      data: {
+        token: resetToken,
+        userId: user.id,
+        expiresAt,
+      },
     });
 
     return {
@@ -214,14 +209,20 @@ export class AuthService {
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     const { resetToken, newPassword } = resetPasswordDto;
 
-    const entry = this.resetTokens.get(resetToken);
-    if (!entry) {
+    const entry = await this.prisma.resetToken.findUnique({
+      where: { token: resetToken },
+    });
+
+    if (!entry || entry.used) {
       throw new BadRequestException('重置令牌无效或已过期');
     }
 
     // 检查是否过期
-    if (Date.now() - entry.createdAt > this.RESET_TOKEN_TTL) {
-      this.resetTokens.delete(resetToken);
+    if (new Date() > entry.expiresAt) {
+      await this.prisma.resetToken.update({
+        where: { id: entry.id },
+        data: { used: true },
+      });
       throw new BadRequestException('重置令牌已过期，请重新操作');
     }
 
@@ -229,14 +230,17 @@ export class AuthService {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-    // 更新密码
-    await this.prisma.user.update({
-      where: { id: entry.userId },
-      data: { password: hashedPassword },
-    });
-
-    // 删除已使用的令牌
-    this.resetTokens.delete(resetToken);
+    // 更新密码并标记令牌已使用（事务保证原子性）
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: entry.userId },
+        data: { password: hashedPassword },
+      }),
+      this.prisma.resetToken.update({
+        where: { id: entry.id },
+        data: { used: true },
+      }),
+    ]);
 
     return { message: '密码重置成功' };
   }
@@ -244,13 +248,15 @@ export class AuthService {
   /**
    * 清理过期重置令牌
    */
-  private cleanupResetTokens(): void {
-    const now = Date.now();
-    for (const [token, entry] of this.resetTokens.entries()) {
-      if (now - entry.createdAt > this.RESET_TOKEN_TTL) {
-        this.resetTokens.delete(token);
-      }
-    }
+  private async cleanupResetTokens(): Promise<void> {
+    await this.prisma.resetToken.deleteMany({
+      where: {
+        OR: [
+          { expiresAt: { lt: new Date() } },
+          { used: true },
+        ],
+      },
+    }).catch(() => {});
   }
   /**
    * 验证用户（用于 JWT 策略）
@@ -274,5 +280,46 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  /**
+   * 修改密码
+   * @param userId 用户ID
+   * @param oldPassword 旧密码
+   * @param newPassword 新密码
+   */
+  async changePassword(userId: string, oldPassword: string, newPassword: string) {
+    if (!oldPassword || !newPassword) {
+      throw new BadRequestException('请填写所有字段');
+    }
+
+    if (newPassword.length < 6 || newPassword.length > 20) {
+      throw new BadRequestException('新密码长度须为6-20位');
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('用户不存在');
+    }
+
+    // 验证旧密码
+    const isOldValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isOldValid) {
+      throw new BadRequestException('当前密码错误');
+    }
+
+    // 加密新密码
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    return { message: '密码修改成功' };
   }
 }

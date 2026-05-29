@@ -25,6 +25,7 @@ import {
 import { GrainOverlay } from '../theme/grain';
 import { useAuthStore } from '../store/authStore';
 import { getUserStats } from '../api/users';
+import { getTryonQuota, AiUsageSummary } from '../api/tryon';
 import { COLORS, SPACING, HAIRLINE, FONT_SIZES } from '../constants';
 
 interface StatItem {
@@ -44,8 +45,8 @@ const MENU_ITEMS: MenuItem[] = [
   { no: '01', title: '收藏柜', iconName: 'bookmark', route: 'Favorites' },
   { no: '02', title: '搭配历史', iconName: 'clock', route: 'OutfitHistory' },
   { no: '03', title: '试穿记录', iconName: 'image', route: 'TryOnHistory' },
-  { no: '04', title: '会员中心', iconName: 'award' },
-  { no: '05', title: '设置', iconName: 'settings' },
+  { no: '04', title: '会员中心', iconName: 'award', route: 'Membership' },
+  { no: '05', title: '设置', iconName: 'settings', route: 'Settings' },
   { no: '06', title: '帮助与反馈', iconName: 'help-circle' },
 ];
 
@@ -59,6 +60,7 @@ function ProfileScreen() {
     { no: '04', kicker: 'TRY-ONS', value: 0 },
   ]);
   const [refreshing, setRefreshing] = useState(false);
+  const [aiUsage, setAiUsage] = useState<AiUsageSummary | null>(null);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -72,6 +74,12 @@ function ProfileScreen() {
       ]);
     } catch (e) {
       console.error('获取统计失败:', e);
+    }
+    try {
+      const quotaRes = await getTryonQuota();
+      setAiUsage(quotaRes.data);
+    } catch (e) {
+      // AI配额获取失败不影响主流程
     }
   }, []);
 
@@ -188,6 +196,45 @@ function ProfileScreen() {
             ))}
           </View>
         </View>
+
+        {/* AI 使用情况 */}
+        {aiUsage && (
+          <View style={styles.aiBlock}>
+            <Section kicker="AI CREDITS" title="今日额度" issue="DAILY" />
+            <View style={styles.aiCard}>
+              <View style={styles.aiRow}>
+                <View style={styles.aiItem}>
+                  <KickerText style={styles.aiLabel}>AI 试穿</KickerText>
+                  <View style={styles.aiBarWrap}>
+                    <View
+                      style={[
+                        styles.aiBar,
+                        { width: `${(aiUsage.tryon.used / aiUsage.tryon.limit) * 100}%` },
+                      ]}
+                    />
+                  </View>
+                  <MonoText style={styles.aiCount}>
+                    {aiUsage.tryon.used}/{aiUsage.tryon.limit}
+                  </MonoText>
+                </View>
+                <View style={styles.aiItem}>
+                  <KickerText style={styles.aiLabel}>AI 推荐</KickerText>
+                  <View style={styles.aiBarWrap}>
+                    <View
+                      style={[
+                        styles.aiBar,
+                        { width: `${(aiUsage.recommend.used / aiUsage.recommend.limit) * 100}%` },
+                      ]}
+                    />
+                  </View>
+                  <MonoText style={styles.aiCount}>
+                    {aiUsage.recommend.used}/{aiUsage.recommend.limit}
+                  </MonoText>
+                </View>
+              </View>
+            </View>
+          </View>
+        )}
 
         {/* 菜单列表 */}
         <View style={styles.menuBlock}>
@@ -344,6 +391,45 @@ const styles = StyleSheet.create({
   },
   statKicker: {
     color: COLORS.caramel,
+  },
+
+  /* AI 使用情况 */
+  aiBlock: {
+    marginTop: SPACING[6],
+  },
+  aiCard: {
+    marginTop: SPACING[3],
+    backgroundColor: COLORS.cream,
+    borderWidth: HAIRLINE,
+    borderColor: COLORS.mistGray,
+    paddingHorizontal: SPACING[4],
+    paddingVertical: SPACING[4],
+  },
+  aiRow: {
+    flexDirection: 'row',
+    gap: SPACING[5],
+  },
+  aiItem: {
+    flex: 1,
+    gap: SPACING[2],
+  },
+  aiLabel: {
+    color: COLORS.inkSoft,
+  },
+  aiBarWrap: {
+    height: 4,
+    backgroundColor: COLORS.mistGray,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  aiBar: {
+    height: 4,
+    backgroundColor: COLORS.caramel,
+    borderRadius: 2,
+  },
+  aiCount: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.inkMuted,
   },
 
   /* 菜单 */

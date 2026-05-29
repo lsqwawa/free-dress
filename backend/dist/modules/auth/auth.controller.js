@@ -49,6 +49,9 @@ let AuthController = class AuthController {
     async getProfile(user) {
         return user;
     }
+    async changePassword(userId, body) {
+        return this.authService.changePassword(userId, body.oldPassword, body.newPassword);
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -112,6 +115,17 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
+__decorate([
+    (0, common_1.Post)('change-password'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: '修改密码', description: '验证旧密码后设置新密码' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('sub')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "changePassword", null);
 exports.AuthController = AuthController = __decorate([
     (0, swagger_1.ApiTags)('认证'),
     (0, common_1.Controller)('auth'),

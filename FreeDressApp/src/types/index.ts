@@ -81,6 +81,10 @@ export type RootStackParamList = {
   Favorites: undefined;
   OutfitHistory: undefined;
   TryOnHistory: undefined;
+  Settings: undefined;
+  ChangePassword: undefined;
+  EditClothing: { clothId: string };
+  Membership: undefined;
 };
 
 export type WardrobeStackParamList = {

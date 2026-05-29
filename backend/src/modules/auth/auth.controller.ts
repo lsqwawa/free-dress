@@ -88,4 +88,18 @@ export class AuthController {
   async getProfile(@CurrentUser() user: any) {
     return user;
   }
+
+  /**
+   * 修改密码
+   */
+  @Post('change-password')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '修改密码', description: '验证旧密码后设置新密码' })
+  async changePassword(
+    @CurrentUser('sub') userId: string,
+    @Body() body: { oldPassword: string; newPassword: string },
+  ) {
+    return this.authService.changePassword(userId, body.oldPassword, body.newPassword);
+  }
 }

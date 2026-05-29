@@ -8,6 +8,7 @@ import {
   Alert,
   Modal,
   FlatList,
+  Share,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
@@ -29,6 +30,8 @@ import { COLORS, SPACING, HAIRLINE, RADIUS, FONT_SIZES } from '../constants';
 import { Cloth } from '../types';
 import { useWardrobeStore } from '../store/wardrobeStore';
 import { useOutfitStore } from '../store/outfitStore';
+import { getRecommendations, RecommendationResult } from '../api/outfits';
+
 
 const STYLE_INTENTS = [
   '极简', '商务', '街头', '复古', '度假', '甜美', '中性', '运动', '优雅',
@@ -43,6 +46,8 @@ function OutfitScreen() {
   const [selectedClothIds, setSelectedClothIds] = useState<string[]>([]);
   const [pickerVisible, setPickerVisible] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [recommendations, setRecommendations] = useState<RecommendationResult[]>([]);
+  const [loadingRec, setLoadingRec] = useState(false);
 
   useEffect(() => {
     if (clothes.length === 0) {
@@ -89,6 +94,41 @@ function OutfitScreen() {
       await toggleFav(currentOutfit.id);
     } catch (e: any) {
       Alert.alert('操作失败', e.message);
+    }
+  }, [currentOutfit]);
+
+  const handleGetRecommendations = useCallback(async () => {
+    setLoadingRec(true);
+    try {
+      const res = await getRecommendations({ count: 3 });
+      setRecommendations(res.data || []);
+    } catch (e: any) {
+      if (e.message?.includes('次数已用完')) {
+        Alert.alert('配额用尽', '今日AI推荐次数已用完，明天再试');
+      } else {
+        Alert.alert('推荐失败', e.message || '请稍后重试');
+      }
+    } finally {
+      setLoadingRec(false);
+    }
+  }, []);
+
+  const handleAdoptRecommendation = useCallback((rec: RecommendationResult) => {
+    setSelectedClothIds(rec.clothIds);
+    setIntents(rec.style ? [rec.style] : []);
+    Alert.alert('已采纳', `${rec.reason}\n\n已填入选择区，可直接生成搭配`);
+  }, []);
+
+  const handleShare = useCallback(async () => {
+    if (!currentOutfit) return;
+    try {
+      const items = currentOutfit.outfitClothes?.length || 0;
+      await Share.share({
+        message: `我在「畅搭」搭配了一套${currentOutfit.style || '日常'}风格穿搭（${items}件单品）✨\n${currentOutfit.aiDescription || '每一件衣服都是自我表达的一部分。'}\n\n#畅搭FreeDress #今日穿搭`,
+        title: '分享我的搭配',
+      });
+    } catch (e) {
+      // 用户取消分享，静默处理
     }
   }, [currentOutfit]);
 
@@ -262,6 +302,12 @@ function OutfitScreen() {
                     label="试穿"
                     onPress={() => navigation.navigate('TryOn')}
                   />
+                  <View style={styles.resultActionDivider} />
+                  <ActionLink
+                    icon="share-2"
+                    label="分享"
+                    onPress={handleShare}
+                  />
                 </View>
               </View>
             </View>
@@ -287,6 +333,56 @@ function OutfitScreen() {
                   "穿衣是一种自我编辑——挑出你今天想成为的版本。"
                 </QuoteText>
               </View>
+            </View>
+          )}
+        </View>
+
+        {/* AI 推荐区 */}
+        <View style={styles.section}>
+          <Section
+            kicker="AI STYLIST"
+            title="智能推荐"
+            issue="POWERED BY AI"
+          />
+          <CaptionText style={styles.recHint}>
+            基于你的衣橱，AI 为你拟定搭配方案
+          </CaptionText>
+
+          <Button
+            variant="outline"
+            colorScheme="ink"
+            size="md"
+            block
+            isLoading={loadingRec}
+            disabled={loadingRec}
+            onPress={handleGetRecommendations}
+            style={styles.recBtn}
+          >
+            {loadingRec ? '推荐生成中...' : '获取 AI 推荐'}
+          </Button>
+
+          {recommendations.length > 0 && (
+            <View style={styles.recList}>
+              {recommendations.map((rec, idx) => (
+                <Pressable
+                  key={idx}
+                  style={styles.recCard}
+                  onPress={() => handleAdoptRecommendation(rec)}
+                >
+                  <View style={styles.recCardHeader}>
+                    <MonoText style={styles.recNo}>№{String(idx + 1).padStart(2, '0')}</MonoText>
+                    <View style={styles.recScoreBadge}>
+                      <MonoText style={styles.recScoreText}>{rec.score}分</MonoText>
+                    </View>
+                  </View>
+                  <SectionTitle style={styles.recStyle}>{rec.style}</SectionTitle>
+                  <CaptionText style={styles.recReason}>{rec.reason}</CaptionText>
+                  <View style={styles.recFooter}>
+                    <CaptionText style={styles.recOccasion}>{rec.occasion}</CaptionText>
+                    <CaptionText style={styles.recAdopt}>点击采纳 →</CaptionText>
+                  </View>
+                </Pressable>
+              ))}
             </View>
           )}
         </View>
@@ -549,6 +645,44 @@ const styles = StyleSheet.create({
   },
   actionLinkLabel: { fontSize: FONT_SIZES.sm, color: COLORS.ink, fontWeight: '500' },
   resultActionDivider: { width: HAIRLINE, height: 16, backgroundColor: COLORS.mistGray },
+
+  /* AI 推荐 */
+  recHint: { marginTop: SPACING[2], fontStyle: 'italic' },
+  recBtn: { marginTop: SPACING[4] },
+  recList: { marginTop: SPACING[4], gap: SPACING[3] },
+  recCard: {
+    backgroundColor: COLORS.cream,
+    borderWidth: HAIRLINE,
+    borderColor: COLORS.mistGray,
+    padding: SPACING[4],
+    gap: SPACING[2],
+  },
+  recCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  recNo: { color: COLORS.inkMuted, fontSize: FONT_SIZES.xs },
+  recScoreBadge: {
+    backgroundColor: COLORS.caramel,
+    paddingHorizontal: SPACING[2],
+    paddingVertical: 2,
+    borderRadius: RADIUS.sm,
+  },
+  recScoreText: { color: COLORS.cream, fontSize: FONT_SIZES.xs },
+  recStyle: { fontSize: FONT_SIZES.md },
+  recReason: { color: COLORS.inkSoft },
+  recFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: SPACING[2],
+    paddingTop: SPACING[2],
+    borderTopWidth: HAIRLINE,
+    borderTopColor: COLORS.mistGray,
+  },
+  recOccasion: { color: COLORS.clay },
+  recAdopt: { color: COLORS.caramel, fontWeight: '500' },
 
   /* 衣物选择器 */
   pickerWrap: { flex: 1, backgroundColor: 'rgba(31,27,22,0.5)', justifyContent: 'flex-end' },

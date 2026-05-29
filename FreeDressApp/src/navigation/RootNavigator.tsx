@@ -19,6 +19,10 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import OutfitHistoryScreen from '../screens/OutfitHistoryScreen';
 import TryOnHistoryScreen from '../screens/TryOnHistoryScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
+import EditClothingScreen from '../screens/EditClothingScreen';
+import MembershipScreen from '../screens/MembershipScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -70,6 +74,10 @@ function RootNavigator() {
             <Stack.Screen name="Favorites" component={FavoritesScreen} />
             <Stack.Screen name="OutfitHistory" component={OutfitHistoryScreen} />
             <Stack.Screen name="TryOnHistory" component={TryOnHistoryScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+            <Stack.Screen name="EditClothing" component={EditClothingScreen} />
+            <Stack.Screen name="Membership" component={MembershipScreen} />
           </>
         ) : (
           <>

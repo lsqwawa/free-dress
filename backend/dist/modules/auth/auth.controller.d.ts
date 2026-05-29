@@ -52,4 +52,10 @@ export declare class AuthController {
         refreshToken: string;
     }>;
     getProfile(user: any): Promise<any>;
+    changePassword(userId: string, body: {
+        oldPassword: string;
+        newPassword: string;
+    }): Promise<{
+        message: string;
+    }>;
 }

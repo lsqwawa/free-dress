@@ -8,7 +8,6 @@ export declare class AuthService {
     private readonly prisma;
     private readonly jwtService;
     private readonly captchaService;
-    private readonly resetTokens;
     private readonly RESET_TOKEN_TTL;
     constructor(prisma: PrismaService, jwtService: JwtService, captchaService: CaptchaService);
     register(registerDto: RegisterDto): Promise<{
@@ -54,5 +53,8 @@ export declare class AuthService {
         nickname: string;
         avatarUrl: string;
         role: import(".prisma/client").$Enums.UserRole;
+    }>;
+    changePassword(userId: string, oldPassword: string, newPassword: string): Promise<{
+        message: string;
     }>;
 }

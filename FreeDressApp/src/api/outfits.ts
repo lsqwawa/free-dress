@@ -37,3 +37,19 @@ export const toggleFavorite = async (outfitId: string): Promise<ApiResponse<{ fa
 export const getFavorites = async (): Promise<ApiResponse<OutfitWithClothes[]>> => {
   return apiClient.get('/outfits/favorites') as Promise<ApiResponse<OutfitWithClothes[]>>;
 };
+
+export interface RecommendationResult {
+  clothIds: string[];
+  style: string;
+  occasion: string;
+  reason: string;
+  score: number;
+}
+
+export const getRecommendations = async (options?: {
+  scene?: string;
+  season?: string;
+  count?: number;
+}): Promise<ApiResponse<RecommendationResult[]>> => {
+  return apiClient.get('/outfits/recommendations', { params: options }) as Promise<ApiResponse<RecommendationResult[]>>;
+};

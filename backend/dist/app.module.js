@@ -10,6 +10,8 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const serve_static_1 = require("@nestjs/serve-static");
+const throttler_1 = require("@nestjs/throttler");
+const core_1 = require("@nestjs/core");
 const path_1 = require("path");
 const prisma_module_1 = require("./prisma/prisma.module");
 const auth_module_1 = require("./modules/auth/auth.module");
@@ -18,6 +20,8 @@ const clothes_module_1 = require("./modules/clothes/clothes.module");
 const upload_module_1 = require("./modules/upload/upload.module");
 const outfits_module_1 = require("./modules/outfits/outfits.module");
 const tryon_module_1 = require("./modules/tryon/tryon.module");
+const membership_module_1 = require("./modules/membership/membership.module");
+const custom_throttler_guard_1 = require("./common/guards/custom-throttler.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,6 +32,10 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
                 envFilePath: '.env',
             }),
+            throttler_1.ThrottlerModule.forRoot([{
+                    ttl: 60000,
+                    limit: 100,
+                }]),
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(process.cwd(), 'uploads'),
                 serveRoot: '/uploads',
@@ -39,6 +47,13 @@ exports.AppModule = AppModule = __decorate([
             upload_module_1.UploadModule,
             outfits_module_1.OutfitsModule,
             tryon_module_1.TryonModule,
+            membership_module_1.MembershipModule,
+        ],
+        providers: [
+            {
+                provide: core_1.APP_GUARD,
+                useClass: custom_throttler_guard_1.CustomThrottlerGuard,
+            },
         ],
     })
 ], AppModule);

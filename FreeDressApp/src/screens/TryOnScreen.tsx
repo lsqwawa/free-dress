@@ -42,7 +42,7 @@ const STEPS = [
 
 function TryOnScreen() {
   const { outfits, fetchOutfits } = useOutfitStore();
-  const { currentResult, isGenerating, generateTryon } = useTryOnStore();
+  const { currentResult, isGenerating, progress, generateTryon } = useTryOnStore();
 
   const [personUri, setPersonUri] = useState<string | null>(null);
   const [personUrl, setPersonUrl] = useState<string | null>(null);
@@ -280,7 +280,30 @@ function TryOnScreen() {
             title="试穿效果"
             issue="VOL.24 / TRY-ON"
           />
-          {currentResult ? (
+
+          {/* 进度条（生成中显示） */}
+          {isGenerating && (
+            <View style={styles.progressWrap}>
+              <View style={styles.progressBar}>
+                <View style={[styles.progressFill, { width: `${progress}%` }]} />
+              </View>
+              <MonoText style={styles.progressText}>
+                {progress < 30 ? '排队中...' : progress < 70 ? 'AI 正在合成...' : '即将完成...'} {progress}%
+              </MonoText>
+            </View>
+          )}
+
+          {/* 失败提示 */}
+          {currentResult?.status === 'FAILED' && (
+            <View style={styles.failedWrap}>
+              <Feather name="alert-circle" size={18} color={COLORS.signal} />
+              <BodyText style={styles.failedText}>
+                生成失败：{currentResult.failReason || '请重试'}
+              </BodyText>
+            </View>
+          )}
+
+          {currentResult && currentResult.status !== 'FAILED' && currentResult.resultImageUrl ? (
             <View style={styles.resultFrame}>
               <View style={styles.resultStampRow}>
                 <MonoText style={{ color: COLORS.cream }}>VOL.24</MonoText>
@@ -515,6 +538,46 @@ const styles = StyleSheet.create({
     paddingTop: SPACING[3],
     borderTopWidth: HAIRLINE,
     borderTopColor: COLORS.inkMuted,
+  },
+
+  /* 进度条 */
+  progressWrap: {
+    marginTop: SPACING[4],
+    gap: SPACING[2],
+  },
+  progressBar: {
+    height: 4,
+    backgroundColor: COLORS.mistGray,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: 4,
+    backgroundColor: COLORS.caramel,
+    borderRadius: 2,
+  },
+  progressText: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.inkMuted,
+    textAlign: 'center',
+  },
+
+  /* 失败提示 */
+  failedWrap: {
+    marginTop: SPACING[4],
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING[2],
+    padding: SPACING[3],
+    backgroundColor: COLORS.cream,
+    borderWidth: HAIRLINE,
+    borderColor: COLORS.signal,
+    borderRadius: 4,
+  },
+  failedText: {
+    flex: 1,
+    color: COLORS.signal,
+    fontSize: FONT_SIZES.sm,
   },
 });
 

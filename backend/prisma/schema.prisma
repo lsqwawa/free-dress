@@ -36,6 +36,32 @@ enum UserRole {
   VIP   // VIP用户
 }
 
+// 会员订阅模型
+model Subscription {
+  id        String           @id @default(uuid())
+  userId    String
+  plan      SubscriptionPlan
+  startDate DateTime         @default(now())
+  endDate   DateTime
+  status    SubscriptionStatus @default(ACTIVE)
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+  @@index([endDate])
+  @@map("subscriptions")
+}
+
+enum SubscriptionPlan {
+  MONTHLY   // 月卡 19.9元
+  YEARLY    // 年卡 168元
+}
+
+enum SubscriptionStatus {
+  ACTIVE    // 有效
+  EXPIRED   // 过期
+  CANCELLED // 已取消
+}
+
 // 衣物模型
 model Cloth {
   id        String        @id @default(uuid())
@@ -115,17 +141,57 @@ model Favorite {
 
 // AI试穿结果模型
 model TryOnResult {
-  id              String   @id @default(uuid())
+  id              String        @id @default(uuid())
   userId          String
   outfitId        String
-  personImageUrl  String   // 人物照片URL
-  resultImageUrl  String   // AI生成结果URL
-  createdAt       DateTime @default(now())
+  personImageUrl  String        // 人物照片URL
+  resultImageUrl  String?       // AI生成结果URL
+  status          TryOnStatus   @default(PENDING)
+  progress        Int           @default(0)     // 处理进度 0-100
+  failReason      String?       // 失败原因
+  processingTime  Int?          // 处理耗时(ms)
+  createdAt       DateTime      @default(now())
   
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  outfit          Outfit   @relation(fields: [outfitId], references: [id], onDelete: Cascade)
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outfit          Outfit        @relation(fields: [outfitId], references: [id], onDelete: Cascade)
   
   @@index([userId])
   @@index([outfitId])
   @@map("tryon_results")
+}
+
+// AI试穿状态枚举
+enum TryOnStatus {
+  PENDING     // 排队中
+  PROCESSING  // 处理中
+  COMPLETED   // 已完成
+  FAILED      // 失败
+}
+
+// 密码重置令牌模型
+model ResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  @@index([token])
+  @@index([expiresAt])
+  @@map("reset_tokens")
+}
+
+// AI配额记录模型（费用控制）
+model AiQuota {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String   // tryon | recommend
+  date      String   // YYYY-MM-DD
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, type, date])
+  @@index([userId])
+  @@map("ai_quotas")
 }

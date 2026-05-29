@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateOutfitDto } from './dto/create-outfit.dto';
 
@@ -7,6 +7,20 @@ export class OutfitsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(userId: string, dto: CreateOutfitDto) {
+    // 验证所有衣物是否属于当前用户
+    if (!dto.clothIds || dto.clothIds.length === 0) {
+      throw new BadRequestException('至少需要选择一件衣物');
+    }
+
+    const userCloths = await this.prisma.cloth.findMany({
+      where: { id: { in: dto.clothIds }, userId },
+      select: { id: true },
+    });
+
+    if (userCloths.length !== dto.clothIds.length) {
+      throw new ForbiddenException('包含无权使用的衣物');
+    }
+
     const outfit = await this.prisma.outfit.create({
       data: {
         userId,
