@@ -5,10 +5,18 @@ import { ApiProperty } from '@nestjs/swagger';
  * 用户登录请求 DTO
  */
 export class LoginDto {
-  @ApiProperty({ description: '手机号', example: '13800138000' })
-  @IsString({ message: '手机号必须是字符串' })
-  @IsNotEmpty({ message: '手机号不能为空' })
-  @Matches(/^1[3-9]\d{9}$/, { message: '手机号格式不正确' })
+  /**
+   * 登录账号字段。
+   * 注意：此字段同时支持普通用户的 11 位手机号，以及管理员账号名（如 "admin"）。
+   * 因此放宽校验：允许 11 位手机号格式，或 2-20 位由字母/数字/下划线组成的管理员账号名。
+   * RegisterDto 仍然保持严格的 11 位手机号校验，不受影响。
+   */
+  @ApiProperty({ description: '手机号或管理员账号名', example: '13800138000' })
+  @IsString({ message: '账号必须是字符串' })
+  @IsNotEmpty({ message: '账号不能为空' })
+  @Matches(/^(1[3-9]\d{9}|[A-Za-z][A-Za-z0-9_]{1,19})$/, {
+    message: '账号格式不正确（支持11位手机号或管理员账号名）',
+  })
   phone: string;
 
   @ApiProperty({ description: '密码', example: '123456' })

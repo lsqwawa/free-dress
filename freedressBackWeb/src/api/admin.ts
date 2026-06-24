@@ -23,7 +23,7 @@ export const adminApi = {
   revenueTrend: (days = 30): Promise<TimeSeriesPoint[]> =>
     http.get('/admin/stats/revenue-trend', { params: { days } }),
   tryOnStats: (): Promise<TryOnStats> => http.get('/admin/tryon/stats'),
-  aiQuotaStats: (days = 7): Promise<AiQuotaStats[]> =>
+  aiQuotaStats: (days = 7): Promise<AiQuotaStats> =>
     http.get('/admin/ai-quotas/stats', { params: { days } }),
 
   // Users

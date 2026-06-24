@@ -156,9 +156,24 @@ export interface TryOnStats {
   topFailReasons: { reason: string; count: number }[];
 }
 
-export interface AiQuotaStats {
+export interface AiQuotaSeriesPoint {
   date: string;
-  count: number;
+  tryon: number;
+  recommend: number;
+  total: number;
+}
+
+export interface AiQuotaPeriodStats {
+  total: number;
+  tryon: number;
+  recommend: number;
+  activeUsers: number;
+  series: AiQuotaSeriesPoint[];
+}
+
+export interface AiQuotaStats {
+  last7Days: AiQuotaPeriodStats;
+  last30Days: AiQuotaPeriodStats;
 }
 
 // ============ Admin 统计 ============
@@ -213,7 +228,17 @@ export interface LoginPayload {
   password: string;
 }
 
+/**
+ * 登录响应（与后端 auth.service.login 返回结构对齐）
+ * 经 TransformInterceptor 包装后，axios 响应拦截器已解包至此 data 层。
+ */
 export interface LoginResponse {
-  token: string;
+  /** JWT 访问令牌（后端字段为 accessToken） */
+  accessToken: string;
+  /** JWT 刷新令牌（30 天有效） */
+  refreshToken: string;
+  /** 序列化后的用户信息 */
   user: AdminUser;
+  /** 自动绑定微信结果（管理后台登录场景下通常为 'SKIP'） */
+  autoBindResult?: 'OK' | 'CONFLICT' | 'ALREADY_BOUND' | 'SKIP';
 }

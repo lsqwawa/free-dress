@@ -142,11 +142,11 @@ export default function DashboardPage() {
 
   const totalTryOns = pieData.reduce((acc, item) => acc + item.value, 0);
 
-  // AI 配额柱状图数据
-  const barData = aiQuotaStats?.slice(-7).map((item) => ({
+  // AI 配额柱状图数据：后端返回 { last7Days: { series: [...] }, last30Days: { series: [...] } }
+  const barData = (aiQuotaStats?.last7Days.series ?? []).map((item) => ({
     date: item.date,
-    calls: item.count,
-  })) ?? [];
+    calls: item.total,
+  }));
 
   return (
     <div className="space-y-8">

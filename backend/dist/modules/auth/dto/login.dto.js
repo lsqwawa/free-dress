@@ -16,10 +16,12 @@ class LoginDto {
 }
 exports.LoginDto = LoginDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: '手机号', example: '13800138000' }),
-    (0, class_validator_1.IsString)({ message: '手机号必须是字符串' }),
-    (0, class_validator_1.IsNotEmpty)({ message: '手机号不能为空' }),
-    (0, class_validator_1.Matches)(/^1[3-9]\d{9}$/, { message: '手机号格式不正确' }),
+    (0, swagger_1.ApiProperty)({ description: '手机号或管理员账号名', example: '13800138000' }),
+    (0, class_validator_1.IsString)({ message: '账号必须是字符串' }),
+    (0, class_validator_1.IsNotEmpty)({ message: '账号不能为空' }),
+    (0, class_validator_1.Matches)(/^(1[3-9]\d{9}|[A-Za-z][A-Za-z0-9_]{1,19})$/, {
+        message: '账号格式不正确（支持11位手机号或管理员账号名）',
+    }),
     __metadata("design:type", String)
 ], LoginDto.prototype, "phone", void 0);
 __decorate([

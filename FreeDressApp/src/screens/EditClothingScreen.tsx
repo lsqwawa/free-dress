@@ -42,27 +42,28 @@ export default function EditClothingScreen() {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadClothData();
-  }, []);
 
-  const loadClothData = async () => {
-    try {
-      const res = await getCloth(clothId);
-      const cloth = res.data;
-      setImageUrl(cloth.imageUrl);
-      setCategory(cloth.category as ClothCategory);
-      setColor(cloth.color || '');
-      setStyle(cloth.style || '');
-      setSelectedSeasons(cloth.season || []);
-      setTags((cloth.tags || []).join(', '));
-    } catch (e: any) {
-      Alert.alert('加载失败', e.message || '无法获取衣物信息');
-      navigation.goBack();
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  useEffect(() => {
+    const loadClothData = async () => {
+      try {
+        const res = await getCloth(clothId);
+        const cloth = res.data;
+        setImageUrl(cloth.imageUrl);
+        setCategory(cloth.category as ClothCategory);
+        setColor(cloth.color || '');
+        setStyle(cloth.style || '');
+        setSelectedSeasons(cloth.season || []);
+        setTags((cloth.tags || []).join(', '));
+      } catch (e: any) {
+        Alert.alert('加载失败', e.message || '无法获取衣物信息');
+        navigation.goBack();
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadClothData();
+  }, [clothId, navigation]);
 
   const toggleSeason = (s: string) => {
     setSelectedSeasons((prev) =>

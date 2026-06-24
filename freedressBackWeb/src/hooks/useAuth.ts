@@ -12,7 +12,7 @@ export function useAuth() {
   const loginMutation = useMutation({
     mutationFn: (payload: LoginPayload) => authApi.login(payload),
     onSuccess: (data) => {
-      login(data.token, data.user);
+      login(data.accessToken, data.user);
       navigate('/dashboard', { replace: true });
     },
   });

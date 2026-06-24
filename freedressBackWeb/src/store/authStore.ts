@@ -30,6 +30,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: initialUser,
   isAuthenticated: !!initialToken,
   login: (token, user) => {
+    // 防御：避免 token 缺失时把 isAuthenticated 误置为 true
+    if (!token) {
+      tokenStorage.clear();
+      localStorage.removeItem(USER_KEY);
+      set({ token: null, user: null, isAuthenticated: false });
+      throw new Error('登录响应缺少访问令牌');
+    }
     tokenStorage.set(token);
     localStorage.setItem(USER_KEY, JSON.stringify(user));
     set({ token, user, isAuthenticated: true });

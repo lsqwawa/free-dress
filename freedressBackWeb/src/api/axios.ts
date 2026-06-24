@@ -7,9 +7,24 @@ import axios, {
 
 const TOKEN_KEY = 'freedress_admin_token';
 
+/**
+ * Token 存储工具
+ * - get：过滤掉历史脏数据（如字符串 "undefined" / "null" / 空串），避免误判已登录
+ * - set：仅在 token 为非空字符串时写入，防止 setItem(key, undefined) 把 "undefined" 落盘
+ */
 export const tokenStorage = {
-  get: () => localStorage.getItem(TOKEN_KEY),
-  set: (token: string) => localStorage.setItem(TOKEN_KEY, token),
+  get: () => {
+    const v = localStorage.getItem(TOKEN_KEY);
+    if (!v || v === 'undefined' || v === 'null') return null;
+    return v;
+  },
+  set: (token: string) => {
+    if (typeof token !== 'string' || !token) {
+      localStorage.removeItem(TOKEN_KEY);
+      return;
+    }
+    localStorage.setItem(TOKEN_KEY, token);
+  },
   clear: () => localStorage.removeItem(TOKEN_KEY),
 };
 

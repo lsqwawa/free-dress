@@ -50,20 +50,20 @@ function FavoritesScreen() {
 
   useEffect(() => {
     fetchFavorites();
-  }, []);
+  }, [fetchFavorites]);
 
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchFavorites();
     setRefreshing(false);
-  }, []);
+  }, [fetchFavorites]);
 
   const handleRemoveFavorite = async (outfitId: string) => {
     try {
       await toggleFavorite(outfitId);
       setFavorites((prev) => prev.filter((o) => o.id !== outfitId));
     } catch (e) {
-      Alert.alert('操作失败', '请稍后重试');
+      Alert.alert('操作失败', '请稍后重试' + e);
     }
   };
 
